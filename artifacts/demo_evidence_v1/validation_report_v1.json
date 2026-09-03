@@ -1,0 +1,25 @@
+{
+  "artifact_id": "demo-official-evidence-pack-v1",
+  "validator": "validate_snapshot_v1.py",
+  "validated_at": "2026-08-31T01:21:00Z",
+  "status": "PASS",
+  "positive_fact_count": 12,
+  "negative_control_count": 2,
+  "source_document_count": 13,
+  "blocked_fact_ids": [],
+  "snapshot_sha256": "7e234fea6ea7a854f1d5cae1916a65a77a1a3082a7a7b61a58d113b9db6f361e",
+  "snapshot_content_sha256_excluding_self": "21583608c77465b9e2a449e554599937febb48963d0fb260a53bc9ce888ade30",
+  "validated_conditions": [
+    "exactly 12 positive facts",
+    "exactly 2 negative controls",
+    "unique positive fact IDs",
+    "unique and resolvable source references",
+    "required positive-fact fields are nonempty",
+    "PayPal target locales remain zh_C2 and zh_US",
+    "Signal locale files share one immutable Git commit and approved string keys",
+    "NC-A is first-party but does not support the tested normative claim",
+    "NC-B remains a coverage-negative control outside positive facts",
+    "prohibited case-output and hardcoded-demo fields or markers are absent",
+    "embedded content fingerprint matches canonical snapshot content"
+  ]
+}

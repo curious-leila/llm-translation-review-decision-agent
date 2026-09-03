@@ -1,0 +1,44 @@
+{
+  "artifact_id": "demo-official-evidence-pack-v1",
+  "record_type": "FREEZE_PROVENANCE",
+  "frozen_at": "2026-08-31T01:21:00Z",
+  "approval_scope": {
+    "positive_fact_ids": ["SIG-01", "SIG-02", "SIG-03", "SIG-04", "PP-01", "PP-02", "PP-03", "PP-04", "TEN-01", "TEN-02", "TEN-03", "TEN-04"],
+    "negative_control_ids": ["NC-A", "NC-B"],
+    "candidate_expansion_performed": false
+  },
+  "source_alignment": {
+    "signal": {
+      "repository": "https://github.com/signalapp/Signal-Android",
+      "git_commit": "879651dc47a7b18b67e7aea52a25197875024680",
+      "english_source_ref": "SIG-ANDROID-EN-STRINGS-879651D",
+      "target_source_ref": "SIG-ANDROID-ZH-RCN-STRINGS-879651D",
+      "validation": "All four approved strings occur once in each locale file under the same Android string key at the same commit.",
+      "validated_keys": ["save", "delete", "AttachmentKeyboard_gallery", "AttachmentKeyboard_go_to_settings"]
+    },
+    "paypal": {
+      "article_pairs": [
+        {"article_id": "HELP111", "english_source_ref": "PAYPAL-HELP111-EN-US", "target_source_ref": "PAYPAL-HELP111-ZH-C2", "target_locale": "zh_C2"},
+        {"article_id": "HELP518", "english_source_ref": "PAYPAL-HELP518-EN-US", "target_source_ref": "PAYPAL-HELP518-ZH-US", "target_locale": "zh_US"}
+      ],
+      "validation": "Each English and Simplified-Chinese page pair shares the same official PayPal article ID and aligned article meaning. Locale labels are retained exactly from the official page URLs."
+    },
+    "tencel": {
+      "publisher": "Lenzing AG / Lenzing Aktiengesellschaft",
+      "english_source_refs": ["TENCEL-HOME-EN", "TENCEL-FIBERS-EN"],
+      "target_source_refs": ["TENCEL-HOME-ZH-CN", "TENCEL-FIBERS-ZH-CN", "TENCEL-HOME-LEAFLET-SC-V1.5"],
+      "validation": "Official English and zh-CN locale-equivalent pages support the approved brand, product-category and navigation names; an official brand PDF corroborates Lenzing trademark usage.",
+      "variation_note": "The official zh-CN site also retains TENCEL™ in selected names and collaboration headlines. TEN-01 therefore records an official Chinese brand form, not a universal replacement mandate."
+    }
+  },
+  "negative_control_provenance": {
+    "NC-A": "Brooklinen's first-party homepage is official but supplies no locale-aligned excerpt supporting the tested Chinese terminology claim.",
+    "NC-B": "Flodesk Studio is established only as a real first-party product term; no Chinese normative answer was collected or admitted."
+  },
+  "freeze_boundaries": {
+    "full_webpage_copies_saved": false,
+    "runtime_or_retrieval_changes": false,
+    "case_runs_generated": false,
+    "external_model_calls": false
+  }
+}

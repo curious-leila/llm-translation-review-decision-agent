@@ -1,0 +1,168 @@
+{
+  "replay_metadata": {
+    "type": "VERIFIED_REPLAY",
+    "source_eval_run_id": "demo-live-engineering-only-56a3d5e2-91c6-44d9-9367-122167bb9814",
+    "source_case_id": "e959a997-287f-4d97-b566-db885d66382d",
+    "display_case_id": "UI-003",
+    "label": "证据成功解决",
+    "description": "Agent 获取官方证据后完成术语判断，并进入后续可靠性与路由决策。"
+  },
+  "result": {
+    "display_case_id": "UI-003",
+    "case_id": "e959a997-287f-4d97-b566-db885d66382d",
+    "processing_status": "ROUTED",
+    "case": {
+      "source_text": "Save",
+      "translation": "保存",
+      "content_type": "UI",
+      "brand_or_domain": "https://github.com/signalapp/Signal-Android/blob/main/app/src/main/res/values/strings.xml",
+      "context_notes": "Frozen source reference: https://github.com/signalapp/Signal-Android/blob/main/app/src/main/res/values/strings.xml"
+    },
+    "risk": {
+      "level": "LOW",
+      "label_zh": "低风险",
+      "reason": "Source 为常见 UI 动词 'Save'，在目标语言中对应关系明确，误译后的用户/业务后果有限，风险较低。",
+      "clarification_question": null
+    },
+    "final_route": {
+      "code": "AUTO_PASS",
+      "label_zh": "自动放行",
+      "triggering_dimensions": [],
+      "blocking_dimensions": [],
+      "sample_audit_dimensions": []
+    },
+    "route_reason_codes": [
+      "ALL_DIMENSIONS_NON_BLOCKING_AUTO_TRUST"
+    ],
+    "dimensions": [
+      {
+        "dimension": "TERMINOLOGY",
+        "severity": "Neutral",
+        "q1": "术语 \"Save\" 译为 \"保存\" 与 Signal-Android 官方 zh-rCN 资源完全一致，术语准确无误。",
+        "q2": "否，该术语不存在问题，未造成任何实际代价。",
+        "notes": "已验证证据显示 Signal-Android 官方 zh-rCN strings.xml 中 name=\"save\" 即为“保存”，与译文完全匹配，故术语维度无问题。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "term_type": null,
+          "term_candidate": null,
+          "evidence_need": null,
+          "normative_claim": false
+        }
+      },
+      {
+        "dimension": "ACCURACY",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "原文命题清单：原文为单个动词 'Save'，表示执行保存动作的指令。译文 '保存' 准确对应原文的命题内容，无增译、漏译或扭曲。三问路径：Q1 目标受众阅读 '保存' 完全无需停顿，理解自然，无感知异样，直接定级 Neutral。Q2、Q3 不适用。结论：Neutral。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "adjacent_correction": "不适用",
+          "boundary_risk": "无"
+        }
+      },
+      {
+        "dimension": "LOCALE",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "格式元素核查：原文为英文单词 Save，译文为中文标准词汇“保存”，不涉及数字、货币、日期、度量单位或标点等数据类格式元素。偏离说明：未发现任何偏离简体中文格式惯例之处。三问路径：Q1判定，目标受众阅读时无需停顿、无感知异样；Q2因 Q1 已定级而不适用。结论：Neutral，所有格式元素均符合目标地区惯例。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "locale_element": "无敏感元素",
+          "boundary_risk": "无"
+        }
+      },
+      {
+        "dimension": "AUDIENCE",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "适配性核查：译文“保存”是中文UI界面中对“Save”的标准通用译法，在中文语境下自然、恰当，受众无需停顿即可理解其功能含义，不存在文化隐喻、语域不匹配或称呼习惯问题，也不构成任何冒犯或敏感内容。三问路径：Q1判定为无需停顿，直接定级Neutral。维度交叉备注：本维度仅评受众适配性，不涉及格式、命题或术语问题，此译文无任何适配性偏离。结论：Neutral。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "audience_element": "无适配问题"
+        }
+      }
+    ],
+    "reliability_decisions": [
+      {
+        "dimension": "TERMINOLOGY",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "TERMINOLOGY×LOW"
+      },
+      {
+        "dimension": "ACCURACY",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "ACCURACY×LOW"
+      },
+      {
+        "dimension": "LOCALE",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "LOCALE×LOW"
+      },
+      {
+        "dimension": "AUDIENCE",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "AUDIENCE×LOW"
+      }
+    ],
+    "post_eval_control": {
+      "terminology_requires_external_evidence": true,
+      "terminology_reason": "Terminology 判断明确使用了'标准惯用译法''行业惯例译法'的规范性译法断言，并据此认定无术语问题；该判断成立依赖尚未验证的行业标准/惯例，故需要外部证据。",
+      "unresolved_support": {
+        "ACCURACY": false,
+        "LOCALE": false,
+        "AUDIENCE": false
+      }
+    },
+    "evidence": {
+      "status": "SUFFICIENT",
+      "stop_reason": "EVIDENCE_SUFFICIENT",
+      "verified_evidence": [
+        {
+          "provenance": "OFFICIAL_DOCS",
+          "source_ref": "https://raw.githubusercontent.com/signalapp/Signal-Android/main/app/src/main/res/values-zh-rCN/strings.xml",
+          "content": "<string name=\"yes\">是</string> <string name=\"no\">否</string> <string name=\"delete\">删除</string> <string name=\"please_wait\">请稍候…</string> <string name=\"save\">保存</string> <string name=\"AttachmentKeyboard_gallery\">相册</string> <string name=\"AttachmentKeyboard_file\">文件</string> <string name=\"AttachmentKeyboard_contact\">联系人</string> <string name=\"AttachmentKeyboard_location\">位置</string> <string name=\"AttachmentKeyboard_manage\">管理</string> <string name=\"AttachmentKeyboard_go_to_settings\">打开设置</string> <string name=\"AttachmentUploadJob_uploading_media\">上传媒体中…</string> <string name=\"AttachmentUploadJob_compressing_video_start\">压缩视频中…</string> <string name=\"CallQualitySheet__continue\">继续</string>",
+          "relevance_reason": "该候选直接提供 Signal-Android 官方 zh-rCN 字符串资源中 name=\"save\" 的译文为“保存”，与实际术语候选和验证“Save / 保存”惯用译法的需求高度相关；来源同属 Signal 项目仓库、目标区域为 zh-CN，与当前 source/translation context 匹配。",
+          "context_match": true,
+          "supports_normative_claim": true
+        }
+      ],
+      "actions": [
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "reason": "当前尚无任何工具调用或已验证证据，需要查找权威官方来源（如微软术语库或平台本地化指南）来验证 zh-CN 界面中 'Save' 的标准译法是否为 '保存'。available_actions 中仅允许 SEARCH_OFFICIAL_DOCS，因此选择该动作。",
+          "query": "Save 保存 中文 简体 术语 微软 官方"
+        }
+      ],
+      "tool_calls": [
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "tool_name": "search_official_docs",
+          "query": "Save 保存 中文 简体 术语 微软 官方",
+          "result_status": "HIT",
+          "result_summary": "Controlled official docs returned 1 candidate(s).",
+          "decision_reason": "当前尚无任何工具调用或已验证证据，需要查找权威官方来源（如微软术语库或平台本地化指南）来验证 zh-CN 界面中 'Save' 的标准译法是否为 '保存'。available_actions 中仅允许 SEARCH_OFFICIAL_DOCS，因此选择该动作。"
+        }
+      ]
+    },
+    "processing_error": null
+  }
+}

@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="面向大模型译文的审校决策 Agent：让每条译文走到合适的审校路径。">
+  <title>面向大模型译文的审校决策 Agent</title>
+  <link rel="stylesheet" href="/assets/styles.css?v=product-polish-v11">
+</head>
+<body>
+  <main id="landing-view">
+    <header class="site-header shell">
+      <div class="brand-cluster">
+        <a class="wordmark" href="#top" aria-label="返回页面顶部">REVIEW DECISION AGENT</a>
+        <aside class="header-scope" aria-label="适用译文场景">
+          <p>适用译文场景</p>
+          <div><span>营销文案</span><span>UI 文案</span><span>客服内容</span></div>
+        </aside>
+      </div>
+      <div class="header-actions">
+        <nav class="primary-nav" aria-label="主导航">
+          <a class="nav-link is-active" href="#custom-review" data-scroll-target="#custom-review" aria-current="page">审校译文</a>
+          <a class="nav-link" href="#verified-replays" data-scroll-target="#verified-replays">案例回放</a>
+          <button class="nav-link" type="button" data-view-target="architecture" hidden>技术架构 <span>Architecture</span></button>
+        </nav>
+      </div>
+    </header>
+
+    <section id="top" class="hero product-hero shell">
+      <svg class="decision-coordinate-field" viewBox="0 0 1200 760" preserveAspectRatio="none" aria-hidden="true">
+        <circle cx="864" cy="344" r="292"></circle>
+        <path class="coordinate-minor" d="M104 502 C274 502 372 501 504 414 C630 331 744 274 1088 274"></path>
+        <path class="coordinate-trace" pathLength="220" d="M104 502 C274 502 372 501 504 414 C630 331 744 274 1088 274"></path>
+        <circle class="coordinate-intersection" cx="504" cy="414" r="3.2"></circle>
+      </svg>
+      <div class="hero-copy">
+        <p class="hero-product-name">面向大模型译文的审校决策 Agent</p>
+        <p class="eyebrow">TRANSLATION REVIEW DECISION AGENT</p>
+        <h1>让每条译文，<br>走到合适的审校路径。</h1>
+        <p class="proposition">把原文和候选译文交给 Review Agent：它会完成质量审校，必要时查证外部证据，并决定这条译文可以自动通过、进入抽样复核，还是必须交给人工。</p>
+        <div class="hero-actions">
+          <a class="secondary-action" href="#custom-review">开始审校</a>
+          <a class="primary-action" href="#verified-replays">查看案例回放</a>
+        </div>
+      </div>
+      <div class="decision-mechanism" aria-label="从审校输入到最终处理路径的产品机制示意">
+        <header class="workspace-heading">
+          <h2>审校决策路径</h2>
+        </header>
+        <div class="decision-workspace">
+          <section class="workspace-stage flow-stage flow-stage-prep">
+            <div class="stage-heading"><span>01</span><h3>提交待审译文</h3></div>
+            <p>原文 · 候选译文 · 内容类型 · 必要时补充上下文</p>
+          </section>
+
+          <section class="workspace-stage flow-stage flow-stage-prep">
+            <div class="stage-heading"><span>02</span><h3>风险与质量检查</h3></div>
+            <p>术语 · 准确性 · 本地化 · 受众</p>
+          </section>
+
+          <section class="workspace-stage terminology-stage flow-gate">
+            <div class="stage-heading"><span>03</span><h3>是否需要外部证据？</h3></div>
+            <p>术语判断存在未解决的外部事实时，才进入证据查证。</p>
+            <div class="flow-branches" aria-label="术语查证的两种处理路径">
+              <div class="flow-branch flow-branch-direct">
+                <div class="flow-branch-label"><i aria-hidden="true"></i><strong>无需查证</strong></div>
+              </div>
+              <div class="flow-branch flow-branch-evidence">
+                <div class="flow-branch-label"><i aria-hidden="true"></i><strong>需要查证</strong></div>
+                <div class="flow-agent" aria-label="证据探索循环根据反馈改变下一动作">
+                  <strong>证据探索循环</strong>
+                  <span>根据证据反馈改变下一动作。</span>
+                </div>
+              </div>
+              <div class="flow-branch-merge" aria-hidden="true"></div>
+            </div>
+          </section>
+
+          <section class="workspace-stage reliability-stage flow-stage flow-destinations">
+            <div class="stage-heading"><span>04</span><h3>判断自动化权限</h3></div>
+            <p>模型不能给自己发通行证</p>
+            <div class="mechanism-routes" aria-label="三种最终处理路径">
+              <span class="flow-destination"><i aria-hidden="true"></i><strong>自动通过</strong></span>
+              <span class="flow-destination"><i aria-hidden="true"></i><strong>抽样复核</strong></span>
+              <span class="flow-destination"><i aria-hidden="true"></i><strong>人工复核</strong></span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="why-product landing-section shell" aria-labelledby="why-product-heading">
+      <div class="why-copy">
+        <p class="eyebrow module-label">WHY THIS PRODUCT</p>
+        <h2 id="why-product-heading">为什么需要 Review Agent？</h2>
+        <p class="why-thesis">全人工审校成本高，<br>但让模型统一自动判断也不可靠。</p>
+        <p>前置评测发现，模型在不同风险 × 审校维度上的可靠性并不一致。因此产品目标不是最大化自动化，而是决定每条内容应该获得多少自动化权限。</p>
+      </div>
+      <div class="pre-evaluation" aria-label="前置评测证据">
+        <div class="metric"><strong>180 <small>次</small></strong><span>人机双评</span></div>
+        <div class="metric"><strong>61%</strong><span>术语 × 高风险一致率</span></div>
+        <div class="metric"><strong>28 / 180 <small>（15.5%）</small></strong><span>原评测策略进入人工复核</span></div>
+        <p class="metric-boundary"><strong>前置评测证据，用于形成产品策略；不是当前 Agent 上线后的效果指标。</strong><small>数据来自前置项目评测记录，完整口径保留在项目文档中。</small></p>
+      </div>
+    </section>
+
+    <section id="verified-replays" class="replay-selector landing-section shell" aria-labelledby="replay-heading">
+      <p class="eyebrow module-label">CASE REPLAY</p>
+      <div class="landing-section-heading replay-selector-intro">
+        <h2 id="replay-heading">案例回放</h2>
+        <p class="case-gallery-lede">看 Review Agent 如何处理不同译文风险</p>
+      </div>
+      <div class="replay-options case-gallery">
+        <button class="replay-option case-gallery-card case-gallery-card-direct" type="button" data-replay-url="/assets/replays/refund-no-evidence.json?v=business-ids-v1" data-display-case-id="CS-020" aria-label="打开无需查证案例回放">
+          <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="case-card-copy"><strong>无需查证</strong><small>依据充分时，Review Agent 直接完成判断。</small></span>
+          <span class="case-card-open" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="replay-option case-gallery-card case-gallery-card-validation" type="button" data-replay-url="/assets/replays/mkt-020-evidence-validation.json?v=business-ids-v1" data-display-case-id="MKT-020" aria-label="打开证据验证案例回放">
+          <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="case-card-copy"><strong>证据验证</strong><small>检索命中后仍会验证，依据不足则停止自主判断。</small></span>
+          <span class="case-card-open" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="replay-option case-gallery-card case-gallery-card-human" type="button" data-replay-url="/assets/replays/mkt-005-safe-failure.json?v=business-ids-v1" data-display-case-id="MKT-005" aria-label="打开人工复核案例回放">
+          <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="case-card-copy"><strong>人工复核</strong><small>证据不足时，Review Agent 停止自主判断并交给人工。</small></span>
+          <span class="case-card-open" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="replay-option case-gallery-card case-gallery-card-closure" type="button" data-replay-url="/assets/replays/ui-003-agent-success.json?v=business-ids-v1" data-display-case-id="UI-003" aria-label="打开自动通过案例回放">
+          <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="case-card-copy"><strong>自动通过</strong><small>获得充分依据后，Review Agent 更新判断并自动通过。</small></span>
+          <span class="case-card-open" aria-hidden="true">↗</span>
+        </button>
+      </div>
+      <p id="replay-status" class="replay-status" aria-live="polite"></p>
+    </section>
+
+    <section id="custom-review" class="input-section landing-section shell" aria-labelledby="run-case-heading">
+      <p class="eyebrow module-label">REVIEW INPUT</p>
+      <div class="section-intro landing-section-heading">
+        <h2 id="run-case-heading">提交一条译文</h2>
+        <p>输入原文和候选译文，选择内容类型。<br>只有在文本脱离场景难以理解时，再补充业务上下文。</p>
+      </div>
+      <form id="review-form" novalidate>
+        <label class="field field-wide">英文原文
+          <textarea name="source_text" required placeholder="粘贴需要审校的英文原文"></textarea>
+        </label>
+        <label class="field field-wide">候选译文
+          <textarea name="translation" required placeholder="粘贴已有的简体中文候选译文"></textarea>
+        </label>
+        <fieldset class="content-type">
+          <legend>内容类型</legend>
+          <div class="segmented" role="radiogroup" aria-label="内容类型">
+            <label><input type="radio" name="content_type" value="MARKETING" required><span>营销文案</span></label>
+            <label><input type="radio" name="content_type" value="CUSTOMER_SUPPORT"><span>客服话术</span></label>
+            <label><input type="radio" name="content_type" value="UI" checked><span>界面文案</span></label>
+          </div>
+        </fieldset>
+        <details class="optional-context">
+          <summary>补充业务上下文（可选）</summary>
+          <p class="optional-context-hint">仅在当前文案难以单独理解时，补充出现位置或用途，例如“设置页按钮”“产品介绍页”。</p>
+          <div class="optional-grid">
+            <label class="field">品牌 / 领域<input name="brand_or_domain" autocomplete="off"></label>
+            <label class="field">上下文说明<input name="context_notes" autocomplete="off"></label>
+          </div>
+        </details>
+        <div class="submit-row">
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+          <button id="submit-button" type="submit">开始审校 <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </section>
+
+    <section class="architecture" aria-labelledby="architecture-heading" hidden>
+      <div class="architecture-intro">
+        <h2 id="architecture-heading">产品决策架构 <span>Product Decision Architecture</span></h2>
+      </div>
+      <div class="architecture-map">
+        <div class="flow-main" aria-label="产品决策主流程">
+          <article class="flow-node start-node"><b>NODE00</b><h3>输入验证 <span>Input Validation</span></h3></article>
+          <span class="arrow down initial-arrow" aria-hidden="true">↓</span>
+          <section class="model-stage" aria-label="模型判断">
+            <p class="stage-label">MODEL JUDGMENT</p>
+            <div class="parallel-nodes">
+              <article class="flow-node"><b>NODE01</b><h3>业务风险判断 <span>Case Risk</span></h3><p>判断译错可能带来的业务风险高低，而非质量好坏。</p></article>
+              <span class="arrow across" aria-hidden="true">→</span>
+              <article class="flow-node"><b>NODE02</b><h3>四维质量审查 <span>4D Quality</span></h3><p>审查术语、准确性、本地化规范与受众适配性。</p></article>
+            </div>
+            <span class="arrow down" aria-hidden="true">↓</span>
+            <article class="flow-node control-node"><b>POST-EVAL CONTROL</b><h3>评估后控制</h3><p>判断质量结论是否需要外部证据支持。</p></article>
+          </section>
+          <section class="evidence-fork" aria-label="证据条件分支">
+            <p class="fork-question">是否需要术语外部证据？</p>
+            <div class="fork-grid">
+              <div class="bypass-branch"><span>否 · 无需补证</span><i aria-hidden="true"></i></div>
+              <div class="agent-branch">
+                <span>是 · 仅术语</span>
+                <article class="flow-node agent-node"><b>NODE03 · CONDITIONAL</b><h3>术语证据 Agent <span>Terminology Evidence</span></h3><p>证据不足时，根据检索结果决定下一步。</p></article>
+                <span class="return-label">已验证证据 ↓</span>
+                <article class="flow-node"><b>NODE02A</b><h3>最终术语判断 <span>Final Terminology Judgment</span></h3><p>结合已验证证据更新术语判断。</p></article>
+              </div>
+            </div>
+          </section>
+          <span class="merge-label">分支汇合 →</span>
+          <article class="flow-node authorization-node"><b>NODE04 · AUTHORIZATION BOUNDARY</b><h3>可靠性策略 <span>Reliability Policy</span></h3><p>决定当前判断可以获得多少自动处理权限。</p></article>
+          <span class="arrow down policy-arrow" aria-hidden="true">↓</span>
+          <article class="flow-node route-node"><b>NODE05</b><h3>分诊聚合 <span>Route Aggregation</span></h3><p>汇总各维度要求，确定 Case 的处理去向。</p></article>
+          <div class="route-flow" aria-label="最终分诊结果与后续处理">
+            <div class="route-path auto-path"><strong>自动放行</strong><span>AUTO_PASS</span></div>
+            <div class="route-path sample-path"><strong>进入抽检</strong><span>SAMPLE_POOL</span><article class="flow-node compact-node"><b>NODE06</b><h3>抽样控制 <span>Sampling</span></h3><p>从抽检池中确定实际抽检 Case。</p></article></div>
+            <div class="route-path human-path"><strong>人工复核</strong><span>HUMAN_REQUIRED</span></div>
+          </div>
+          <p class="human-entry">抽中的 SAMPLE_POOL 与 HUMAN_REQUIRED ↓</p>
+          <article class="flow-node human-node"><b>NODE07</b><h3>人工复核 <span>Human Review</span></h3></article>
+          <span class="arrow down human-arrow" aria-hidden="true">↓</span>
+          <article class="flow-node memory-node"><b>NODE08</b><h3>验证记忆准入 <span>Validated Memory</span></h3><p>仅允许人工确认的结果进入可复用记忆。</p></article>
+        </div>
+        <details class="architecture-detail"><summary>查看关键边界</summary><p>NODE03 仅处理术语证据不确定性；证据必须回流 NODE02A。AUTO_TRUST 不等于 AUTO_PASS，SAMPLE_POOL 也不等于已经抽中。</p></details>
+      </div>
+    </section>
+
+    <footer class="product-footer landing-footer shell">
+      <p><span>REVIEW DECISION AGENT</span><small>让每条译文走到合适的审校路径。</small></p>
+      <div class="footer-actions landing-footer-actions">
+        <a class="footer-link architecture-link" href="/assets/architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener">实现说明 · 查看 Review Agent 架构</a>
+        <button class="footer-link" type="button" data-scroll-top>回到顶部 <span aria-hidden="true">↑</span></button>
+      </div>
+    </footer>
+  </main>
+
+  <main id="architecture-view" hidden>
+    <header class="site-header shell architecture-header">
+      <button class="wordmark wordmark-button" type="button" data-view-target="demo">REVIEW DECISION AGENT</button>
+      <div class="header-actions">
+        <nav class="primary-nav" aria-label="主导航">
+          <a class="nav-link" href="#custom-review" data-scroll-target="#custom-review">审校译文</a>
+          <a class="nav-link" href="#verified-replays" data-scroll-target="#verified-replays">案例回放</a>
+          <button class="nav-link is-active" type="button" data-view-target="architecture" aria-current="page" hidden>技术架构 <span>Architecture</span></button>
+        </nav>
+      </div>
+    </header>
+
+    <section class="architecture-hero shell" aria-labelledby="architecture-view-heading">
+      <p class="eyebrow">PRODUCT DECISION ARCHITECTURE</p>
+      <h1 id="architecture-view-heading">产品决策架构</h1>
+      <p>不是把整个审校流程 Agent 化，而是根据不确定性与授权风险，将判断、探索、确定性边界和人工确认交给不同角色。</p>
+    </section>
+
+    <section class="architecture-product shell" aria-labelledby="product-flow-heading">
+      <div class="architecture-section-heading"><p class="eyebrow">PRODUCT VIEW</p><h2 id="product-flow-heading">产品 Agentic 工作流</h2><p>先判断，再只在术语需要外部事实时启动受控证据探索。</p></div>
+      <div class="product-flow">
+        <div class="product-spine" aria-label="NODE00 至 NODE05 产品决策主流程">
+          <article class="decision-stage product-stage rule-stage"><p class="node-meta"><b>NODE00</b><span class="ownership">RULE</span></p><h3>输入校验 <small>Input Validation</small></h3></article><span class="spine-arrow" aria-hidden="true">→</span>
+          <article class="decision-stage product-stage model-stage-card"><p class="node-meta"><b>NODE01</b><span class="ownership">MODEL</span></p><h3>案例风险 + 四维审校 <small>Case Risk + 4D Review</small></h3></article><span class="spine-arrow" aria-hidden="true">→</span>
+          <article class="decision-stage product-stage model-stage-card"><p class="node-meta"><b>NODE02</b><span class="ownership">MODEL</span></p><h3>外部证据判断 <small>External Evidence Decision</small></h3></article><span class="spine-arrow optional-arrow" aria-hidden="true">→<small>按需</small></span>
+          <article class="decision-stage product-stage agent-stage"><p class="node-meta"><b>NODE03</b><span class="ownership">AGENT</span></p><h3>术语证据 Agent <small>Terminology Evidence Agent</small></h3><p>内部包含证据探索循环与最终术语判断，详细循环见 Agent Decision Loop。</p></article><span class="spine-arrow" aria-hidden="true">→</span>
+          <article class="decision-stage product-stage rule-stage"><p class="node-meta"><b>NODE04</b><span class="ownership">RULE</span></p><h3>可靠性策略 <small>Reliability Policy</small></h3></article><span class="spine-arrow" aria-hidden="true">→</span>
+          <article class="decision-stage product-stage rule-stage"><p class="node-meta"><b>NODE05</b><span class="ownership">RULE</span></p><h3>最终路由 <small>Route Aggregation</small></h3></article>
+        </div>
+        <div class="route-branches" aria-label="NODE05 最终路由出口"><div class="route-branch auto-branch"><strong>AUTO PASS</strong><small>自动通过</small></div><div class="route-branch sample-branch"><strong>SAMPLE AUDIT</strong><small>抽样复核</small></div><div class="route-branch human-branch"><strong>HUMAN REQUIRED</strong><small>人工复核</small></div></div>
+        <section class="human-review-panel" aria-label="人工复核闭环"><div class="human-review-copy"><h3>人工复核闭环 <span>(Human Review Loop)</span></h3><p>SAMPLE AUDIT / HUMAN REQUIRED 共同进入人工复核闭环。</p></div><div class="human-review-flow"><div class="human-review-entry"><span>SAMPLE AUDIT</span><span>HUMAN REQUIRED</span></div><article class="decision-stage rule-stage"><p class="node-meta"><b>NODE06</b><span class="ownership">RULE</span></p><h3>抽样控制器 <small>Sampling Controller</small></h3><p>根据抽样策略选择需要人工复核的 Case。</p></article><span class="human-loop-arrow" aria-hidden="true">↓</span><article class="decision-stage human-stage"><p class="node-meta"><b>NODE07</b><span class="ownership">HUMAN</span></p><h3>人工复核 <small>Human Review</small></h3></article><span class="human-loop-arrow" aria-hidden="true">↓</span><article class="decision-stage rule-stage"><p class="node-meta"><b>NODE08</b><span class="ownership">RULE</span></p><h3>验证记忆准入 <small>Validated Memory Gate</small></h3><p>仅保存符合准入条件的人审结果；UNRESOLVED 不写入。</p></article></div></section>
+      </div>
+    </section>
+
+    <section class="role-legend shell" aria-label="决策角色说明"><span><b class="ownership model">MODEL</b> 负责判断</span><span><b class="ownership agent">AGENT</b> 降低外部事实不确定性</span><span><b class="ownership rule">RULE</b> 控制自动化权限边界</span><span><b class="ownership human">HUMAN</b> 最终确认</span></section>
+
+    <section class="agent-loop-section shell" aria-labelledby="loop-heading">
+      <div class="architecture-section-heading"><p class="eyebrow">NODE03 内部决策循环</p><h2 id="loop-heading">证据 Agent 决策循环 <span>(Agent Decision Loop)</span></h2><p class="loop-runtime-note">NODE03 内部执行阶段 · 非独立 LangGraph Nodes</p></div>
+      <div class="agent-loop"><article class="loop-state"><b>当前证据状态 <small>State</small></b><span class="executor-label state-executor">WORKING STATE</span><p>已有判断、证据与预算状态</p></article><span class="loop-arrow" aria-hidden="true">→</span><article class="loop-agent-step loop-selector"><b>选择下一步行动 <small>Selector</small></b><span class="executor-label llm-executor">LLM · DeepSeek V4 Flash</span><p>决定下一步搜索什么，以及查询词如何变化</p></article><span class="loop-arrow" aria-hidden="true">→</span><article class="loop-agent-step loop-tool"><b>获取受控证据 <small>Evidence Tool</small></b><span class="executor-label tool-executor">TOOL</span><p>调用可信来源获取候选证据</p></article><span class="loop-arrow" aria-hidden="true">→</span><article><b>验证证据有效性 <small>Assessor</small></b><span class="executor-label llm-executor">LLM · DeepSeek V4 Flash</span><p>判断证据是否相关、匹配当前术语</p></article><span class="loop-arrow" aria-hidden="true">→</span><article class="loop-rule"><b>确定停止条件 <small>Rule</small></b><span class="executor-label rule-executor">DETERMINISTIC RULE</span><p>检查来源、冲突、充分性与预算</p></article><span class="loop-arrow" aria-hidden="true">→</span><article class="loop-state-update"><b>更新状态 <small>State Update</small></b><span class="executor-label state-executor">WORKING STATE</span><p>继续探索，或进入终止动作</p></article></div>
+      <div class="agent-loop-return" aria-label="State Update 返回 State 的探索回路"><span>继续探索 → 返回更新后的证据状态</span><span>结束探索 → 最终判断</span></div>
+      <aside class="memory-boundary-note"><strong>Working State ≠ Persistent Memory</strong><span>NODE03 使用当前 Case 的 working state 驱动下一动作；跨 Case validated memory 由 NODE08 控制准入。当前 Live MVP 未启用 persistent memory retrieval。</span></aside>
+      <div class="stop-path"><strong>证据接纳 → 冲突检查 → 充分性判断</strong><span>满足条件：Rule 收回停止权，结束探索，进入最终判断。</span><span>否则：更新状态，继续下一轮探索。</span></div>
+      <aside class="stopping-callout"><div><h3>为什么由 Rule 决定停止？</h3><p class="section-term">Stopping Ownership</p><p>Agent 可以探索未知证据，但不能决定自己已经足够可信。当证据满足充分条件，由 Rule 收回停止权，结束探索并进入最终判断。</p></div><div class="ownership-split"><span>Agent 负责<br><b>探索下一步证据</b></span><span>Rule 负责<br><b>判定充分并停止</b></span></div><div class="product-decision-evidence"><p class="eyebrow">PRODUCT DECISION · UI-003</p><div class="decision-metric" aria-label="四次调用到一次调用"><strong>4</strong><span>次调用<br><b>→</b></span><strong>1</strong><span>次调用</span></div><p>证据满足充分条件后，由确定性 Rule 立即停止探索，不再等待 Selector 主动提出 STOP。</p><small>单案例机制优化记录，不代表平均工具成本或总体效率结论。</small></div></aside>
+    </section>
+
+    <section class="autonomy-section shell" aria-labelledby="autonomy-heading">
+      <div class="architecture-section-heading"><h2 id="autonomy-heading">谁拥有哪种决策权</h2><p class="section-term">Autonomy Boundary</p></div>
+      <div class="autonomy-grid"><article><h3>模型判断 <small>(Model Judgment)</small></h3><b class="ownership model">MODEL</b><p>案例风险、四维审校与最终术语判断</p></article><article><h3>Agent 探索 <small>(Agent Exploration)</small></h3><b class="ownership agent">AGENT</b><p>选择证据行动、调整查询并根据工具反馈决定下一步</p></article><article><h3>Rule 边界 <small>(Rule Boundary)</small></h3><b class="ownership rule">RULE</b><p>输入校验、冲突与充分性边界、可靠性策略和最终路由</p></article><article><h3>人工确认 <small>(Human Confirmation)</small></h3><b class="ownership human">HUMAN</b><p>确认抽样案例、高风险案例与未解决问题</p></article></div>
+      <p class="autonomy-statement">Agent 可以决定下一步如何寻找证据，但不能决定自己是否获得最终放行。<span>模型不能给自己发通行证。</span></p>
+    </section>
+
+    <section class="engineering-view shell"><details><summary>查看工程实现 <span>Engineering View</span></summary><div class="engineering-content"><div><p class="eyebrow">PRODUCT VIEW ≠ ACTUAL RUNTIME</p><h2>真实 compiled LangGraph</h2><p class="compiled-path">NODE00 → NODE01 → NODE02 → NODE03 → NODE04 → NODE05</p></div><ul><li><b>NODE02A</b> 不是独立 compiled LangGraph node；它是 NODE03 execution path 中的 final terminology judgment。</li><li><b>NODE06–08</b> 位于 service / application layer，不属于当前 compiled graph。</li><li><b>NODE03</b> 是 Python <code>while</code> loop；当前没有 LangGraph subgraph。</li></ul></div></details></section>
+  </main>
+
+  <main id="result-view" hidden aria-live="polite">
+    <header class="site-header shell">
+      <div class="brand-cluster">
+        <button class="wordmark wordmark-button" type="button" data-view-target="demo">REVIEW DECISION AGENT</button>
+      </div>
+      <div class="header-actions">
+        <nav class="primary-nav" aria-label="主导航">
+          <a class="nav-link is-active" href="#custom-review" data-scroll-target="#custom-review" aria-current="page">审校译文</a>
+          <a class="nav-link" href="#verified-replays" data-scroll-target="#verified-replays">案例回放</a>
+          <button class="nav-link" type="button" data-view-target="architecture" hidden>技术架构 <span>Architecture</span></button>
+        </nav>
+        <button class="text-button new-case" type="button">查看其他案例 <span>→</span></button>
+      </div>
+    </header>
+    <aside id="replay-identity" class="replay-identity shell" hidden>
+      <div><p class="eyebrow">已验证历史回放</p><strong id="replay-label"></strong><p id="replay-description"></p></div>
+      <p class="replay-truth-note">结果来自已保存的 Review Agent 真实历史运行。</p>
+    </aside>
+    <section class="result-hero shell" id="result-hero">
+      <div class="result-decision"><p class="eyebrow">FINAL ROUTE</p><h1 id="route-title">审校未完成</h1></div>
+      <dl class="result-meta"><div><dt>案例编号</dt><dd><span id="case-id">—</span></dd></div><div><dt>处理状态</dt><dd id="processing-status">—</dd></div></dl>
+       <section class="summary-why" aria-labelledby="why-heading"><h2 id="why-heading">为什么这样处理</h2><p id="route-explanation">—</p></section>
+       <section id="evidence-status-summary" class="evidence-status-summary" hidden aria-labelledby="evidence-status-heading">
+         <div class="evidence-status-heading"><div><p class="eyebrow">REVIEW AGENT EVIDENCE CHECK</p><h2 id="evidence-status-heading">证据判断结果</h2></div></div>
+         <div id="evidence-status-steps" class="evidence-status-steps" aria-label="证据判断状态"></div>
+         <p id="evidence-status-explanation" class="evidence-status-explanation"></p>
+       </section>
+       <details class="technical-evidence"><summary>查看依据</summary><div id="route-drivers" class="driver-list"></div></details>
+    </section>
+    <section class="result-body shell">
+      <section class="result-overview" aria-label="审校结果概览">
+        <article class="detail-card risk-card"><p class="eyebrow">CASE RISK</p><h2>案例风险</h2><p class="risk-definition">如果这条内容翻错，可能带来的业务或用户影响有多大。</p><p class="risk-value"><strong id="risk-label">—</strong></p><p id="risk-reason"></p><p class="risk-note">风险表示出错后的潜在影响，不等于当前译文质量。</p></article>
+        <div class="result-review-column">
+          <section class="case-summary"><p class="eyebrow">REVIEW CONTENT</p><h2>审校内容</h2><dl id="submitted-case"></dl></section>
+          <section class="review-section"><p class="eyebrow">4D REVIEW</p><h2>四维审校</h2><div id="dimension-list" class="dimension-list"></div></section>
+        </div>
+      </section>
+      <section id="agent-detail" class="agent-trace-section" hidden aria-labelledby="agent-trace-heading">
+         <header class="agent-trace-header"><p class="eyebrow">DECISION TRACE</p><h2 id="agent-trace-heading">Review Agent 的证据判断过程</h2><p>Review Agent 先完成质量判断，再根据证据需要与可靠性策略决定最终处理路径。</p></header>
+        <div id="agent-trace" class="agent-trace"></div>
+        <details class="policy-disclosure"><summary>查看完整可靠性策略</summary><div id="reliability-list"></div><p class="policy-boundary">策略来自冻结的前置试点评测，用于 V1 路由校准，不代表生产级可靠性。</p></details>
+        <a class="footer-link architecture-link trace-architecture-link" href="/assets/architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener"><span class="link-marker" aria-hidden="true">▶</span>查看 Review Agent 架构</a>
+      </section>
+      <section id="incomplete-section" class="incomplete-section" hidden><p class="eyebrow">安全停止</p><h2>审校未完成</h2><p id="incomplete-message"></p></section>
+    </section>
+    <footer class="product-footer result-footer shell">
+      <div><p class="eyebrow">CONTINUE REVIEWING</p><strong>继续查看 Review Agent 的其他处理路径</strong></div>
+      <div class="footer-actions">
+        <button class="footer-link" type="button" data-scroll-top>回到顶部 <span aria-hidden="true">↑</span></button>
+        <button class="footer-primary new-case" type="button">查看其他案例 <span aria-hidden="true">→</span></button>
+      </div>
+    </footer>
+  </main>
+  <script src="/assets/app.js?v=final-copy-v4" defer></script>
+</body>
+</html>

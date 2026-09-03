@@ -1,0 +1,205 @@
+{
+  "replay_metadata": {
+    "type": "VERIFIED_REPLAY",
+    "source_eval_run_id": "day1_engineering_real_cases_v1:MKT-005:attempt-002",
+    "source_case_id": "74aedb8e-853c-47e7-961d-882ef150c3ea",
+    "display_case_id": "MKT-005",
+    "label": "证据不足 → 人工复核",
+    "description": "Agent 在证据不足时停止自主判断，并将案例安全交给人工复核。"
+  },
+  "result": {
+    "display_case_id": "MKT-005",
+    "case_id": "74aedb8e-853c-47e7-961d-882ef150c3ea",
+    "processing_status": "ROUTED",
+    "case": {
+      "source_text": "A place to make beautiful emails. Describe it, and Flodesk Studio designs a beautifully on-brand email in seconds. Built by top designers, accelerated by AI, finished by you.",
+      "translation": "一个轻松制作精美邮件的地方。只需描述你的需求，Flodesk Studio 就能在几秒钟内设计出符合品牌风格的精美邮件。由顶尖设计师打造，AI 加速创作，最后由你完成。",
+      "content_type": "MARKETING",
+      "brand_or_domain": "Flodesk Studio / email marketing",
+      "context_notes": "Marketing copy for an AI-assisted email design product."
+    },
+    "risk": {
+      "level": "LOW",
+      "label_zh": "低风险",
+      "reason": "The source is a short, non-technical marketing message with no high-stakes obligations or instructions. The main potential impact of a mistranslation is reduced marketing effectiveness or slightly confused brand perception, which is low in an ex-ante risk sense.",
+      "clarification_question": null
+    },
+    "final_route": {
+      "code": "HUMAN_REQUIRED",
+      "label_zh": "必须人工复核",
+      "triggering_dimensions": [
+        "TERMINOLOGY"
+      ],
+      "blocking_dimensions": [],
+      "sample_audit_dimensions": []
+    },
+    "route_reason_codes": [
+      "TERMINOLOGY_HUMAN_VERIFY"
+    ],
+    "dimensions": [
+      {
+        "dimension": "TERMINOLOGY",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "术语核查：原文涉及品牌名 Flodesk Studio，以及 emails、on-brand、AI 等行业词汇。译文将 Flodesk Studio 保留原文，符合产品专有名词不翻译的惯例；emails 译为\"邮件\"，准确；on-brand 译为\"符合品牌风格\"，在营销文案中为常见本地化表达，未出现语义边界偏移；AI 保留原文，通用。正确译法：Flodesk Studio 应保留原文，译文已如此；on-brand 可译为\"符合品牌风格\"或\"与品牌形象一致\"，二选一均可，此处译法不构成错误。替换测试：若将 Flodesk Studio 替换为中文\"设计工作室\"一类，会失去品牌识别度，译文保留原文，测试通过。三问路径：Q1 判定，目标受众阅读时无需停顿，对术语无感知异样，因此定为 Neutral；Q2 不适用。维度交叉备注：无。结论：未发现术语问题，术语准确且译文内一致。类型标注：无术语问题。",
+        "requires_external_evidence": true,
+        "unresolved_external_support": false,
+        "details": {
+          "term_type": "无术语问题",
+          "term_candidate": "Flodesk Studio",
+          "evidence_need": "需要验证 Flodesk Studio 是否有官方中文译名、品牌指定译法或行业公认译法，以确认保留原文是否符合规范。",
+          "normative_claim": true
+        }
+      },
+      {
+        "dimension": "ACCURACY",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "原文命题清单：①这是一个制作精美邮件的地方；②用户描述需求后，Flodesk Studio 能在几秒钟内设计出符合品牌风格的精美邮件；③该邮件由顶级设计师构建，由 AI 加速，由用户最终完成。译文表现：译文完整传达了上述三个命题，未发现漏译或误译。其中“轻松”为修辞性增译（语气渲染），不引入新命题，不构成 Accuracy 问题；“描述你的需求”是“Describe it”的自然对应，未增添实质性信息。三问路径：Q1 阅读流畅，无需停顿，无感知异样，定级 Neutral。Q2 不适用。维度交叉备注：无术语问题。结论：Accuracy 为 Neutral。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "adjacent_correction": "不适用",
+          "boundary_risk": "无"
+        }
+      },
+      {
+        "dimension": "LOCALE",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "格式元素核查：译文未出现数字格式、货币、日期时间、度量单位等数据类元素，仅有一处时间表述'在几秒钟内'，属于自然中文表达，无千分位、小数、范围等格式问题。标点排版方面，译文使用中文全角逗号、句号，符合简体中文标点惯例，未出现英文标点或全半角混用。偏离说明：未发现任何格式偏离。三问路径：Q1判定，目标读者阅读流畅，无需停顿辨析任何格式含义；Q2不适用。维度交叉备注：无内部格式不一致问题。结论：所有格式元素符合目标地区惯例，severity 定为 Neutral。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "locale_element": "无敏感元素",
+          "boundary_risk": "无"
+        }
+      },
+      {
+        "dimension": "AUDIENCE",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "适配性核查：译文整体流畅自然，无文化隐喻、颜色数字象征、幽默等可能产生歧义的元素。语域匹配：营销文案采用中文互联网产品介绍的高频表达，如“只需描述你的需求”“就能在几秒钟内”“由顶尖设计师打造”，均为地道说法，受众接受度高，无口语化或游戏化失配。称呼习惯：原文未直接称呼用户，译文未使用“您”，但在此类产品描述型文案中不构成距离感或冒犯。三问路径：Q1判定，目标受众读完全句无需停顿，理解即时完成，无感知异样。Q2不适用。结论：未发现受众适配性问题，判定为Neutral。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "audience_element": "无适配问题"
+        }
+      }
+    ],
+    "reliability_decisions": [
+      {
+        "dimension": "TERMINOLOGY",
+        "verification_route": "HUMAN_VERIFY",
+        "label_zh": "人工验证",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": "TERMINOLOGY_EVIDENCE_INSUFFICIENT",
+        "policy_cell": "TERMINOLOGY×LOW"
+      },
+      {
+        "dimension": "ACCURACY",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "ACCURACY×LOW"
+      },
+      {
+        "dimension": "LOCALE",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "LOCALE×LOW"
+      },
+      {
+        "dimension": "AUDIENCE",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "AUDIENCE×LOW"
+      }
+    ],
+    "post_eval_control": {
+      "terminology_requires_external_evidence": true,
+      "terminology_reason": "Terminology judgment 认为 Flodesk Studio 应保留原文，这依赖于产品专有名词不翻译的行业惯例以及该品牌没有官方中文译名的事实；该断言包含规范性含义（应保留原文），且这些外部事实尚未验证。",
+      "unresolved_support": {
+        "ACCURACY": false,
+        "LOCALE": false,
+        "AUDIENCE": false
+      }
+    },
+    "evidence": {
+      "status": "INSUFFICIENT",
+      "stop_reason": "Max tool calls (4/4) reached and all four searches returned MISS with no verified evidence; further searches are not allowed under the budget, and no sufficient evidence exists to stop.",
+      "verified_evidence": [],
+      "actions": [
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "reason": "当前尚无任何搜索记录，且证据需求明确要求验证 Flodesk Studio 是否有官方中文译名或品牌指定译法。作为品牌专有名词，应优先从官方渠道确认是否存在规范化中文名称，因此选择搜索官方文档。",
+          "query": "Flodesk Studio 官方中文名"
+        },
+        {
+          "action": "SEARCH_MEMORY",
+          "reason": "官方文档检索未命中，且当前尚无任何已验证证据。需要先查询记忆库中是否存在 Flodesk Studio 的既定中文译名或翻译惯例，以判断保留原文是否合适。",
+          "query": "Flodesk Studio 中文名称"
+        },
+        {
+          "action": "SEARCH_GLOSSARY",
+          "reason": "已搜索官方文档和案例记忆均无结果，仍需检查术语表以确认是否存在官方或行业公认译名。",
+          "query": "Flodesk Studio"
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "reason": "三个受控来源对 'Flodesk Studio' 的初次检索均未命中，且仍有 1 次工具调用预算。改用包含中文的查询继续检查官方文档，以确认是否存在官方中文译名或品牌指定译法，进而判断保留原文是否合规。",
+          "query": "Flodesk Studio 中文"
+        },
+        {
+          "action": "ABSTAIN",
+          "reason": "Max tool calls (4/4) reached and all four searches returned MISS with no verified evidence; further searches are not allowed under the budget, and no sufficient evidence exists to stop.",
+          "query": null
+        }
+      ],
+      "tool_calls": [
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "tool_name": "search_official_docs",
+          "query": "Flodesk Studio 官方中文名",
+          "result_status": "MISS",
+          "result_summary": "No controlled official docs result matched the query.",
+          "decision_reason": "当前尚无任何搜索记录，且证据需求明确要求验证 Flodesk Studio 是否有官方中文译名或品牌指定译法。作为品牌专有名词，应优先从官方渠道确认是否存在规范化中文名称，因此选择搜索官方文档。"
+        },
+        {
+          "action": "SEARCH_MEMORY",
+          "tool_name": "search_case_memory",
+          "query": "Flodesk Studio 中文名称",
+          "result_status": "MISS",
+          "result_summary": "No controlled case memory result matched the query.",
+          "decision_reason": "官方文档检索未命中，且当前尚无任何已验证证据。需要先查询记忆库中是否存在 Flodesk Studio 的既定中文译名或翻译惯例，以判断保留原文是否合适。"
+        },
+        {
+          "action": "SEARCH_GLOSSARY",
+          "tool_name": "search_glossary",
+          "query": "Flodesk Studio",
+          "result_status": "MISS",
+          "result_summary": "No controlled glossary result matched the query.",
+          "decision_reason": "已搜索官方文档和案例记忆均无结果，仍需检查术语表以确认是否存在官方或行业公认译名。"
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "tool_name": "search_official_docs",
+          "query": "Flodesk Studio 中文",
+          "result_status": "MISS",
+          "result_summary": "No controlled official docs result matched the query.",
+          "decision_reason": "三个受控来源对 'Flodesk Studio' 的初次检索均未命中，且仍有 1 次工具调用预算。改用包含中文的查询继续检查官方文档，以确认是否存在官方中文译名或品牌指定译法，进而判断保留原文是否合规。"
+        }
+      ]
+    },
+    "processing_error": null
+  }
+}

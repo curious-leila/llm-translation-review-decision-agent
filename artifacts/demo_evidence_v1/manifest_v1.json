@@ -1,0 +1,22 @@
+{
+  "artifact_id": "demo-official-evidence-pack-v1",
+  "version": "1.0.0",
+  "freeze_type": "DATA_EVIDENCE_ONLY",
+  "frozen_at": "2026-08-31T01:21:00Z",
+  "snapshot_file": "official_terminology_snapshot_v1.json",
+  "snapshot_sha256": "7e234fea6ea7a854f1d5cae1916a65a77a1a3082a7a7b61a58d113b9db6f361e",
+  "snapshot_content_sha256_excluding_self": "21583608c77465b9e2a449e554599937febb48963d0fb260a53bc9ce888ade30",
+  "positive_fact_count": 12,
+  "negative_control_count": 2,
+  "source_document_count": 13,
+  "family_fact_counts": {
+    "Signal Android UI": 4,
+    "PayPal customer support": 4,
+    "Lenzing / TENCEL marketing": 4
+  },
+  "signal_version": "879651dc47a7b18b67e7aea52a25197875024680",
+  "paypal_target_locales": ["zh_C2", "zh_US"],
+  "blocked_fact_ids": [],
+  "runtime_wiring": "NONE",
+  "admission_basis": "Human-approved fixed list supplied for this freeze; no additional candidates admitted."
+}

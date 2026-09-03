@@ -1,0 +1,14 @@
+.venv/
+.reasonix/
+**/__pycache__/
+*.pyc
+*.pyo
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.db
+logs/
+runtime/
+artifacts/day2_formal_v1/formal_development_abc.sqlite
+artifacts/day2_formal_v2/formal_development_abc.sqlite

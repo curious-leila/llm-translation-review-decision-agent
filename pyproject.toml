@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "review-triage-agent"
+version = "0.1.0"
+description = "Controlled human-in-the-loop translation review triage workflow"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "fastapi>=0.116,<1.0",
+    "httpx>=0.28,<1.0",
+    "langgraph>=1.0,<2.0",
+    "pydantic>=2.12,<3.0",
+    "python-dotenv>=1.1,<2.0",
+    "uvicorn>=0.35,<1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/review_triage"]
+
+[tool.unittest]
+start-directory = "tests"

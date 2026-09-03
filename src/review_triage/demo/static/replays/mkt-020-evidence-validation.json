@@ -1,0 +1,207 @@
+{
+  "replay_metadata": {
+    "type": "VERIFIED_REPLAY",
+    "source_eval_run_id": "demo-live-engineering-only-3fc79dab-d7f4-423d-8eb6-f2027f46ae1e",
+    "source_case_id": "0eca1da5-d885-465d-974b-34804eb5e09c",
+    "display_case_id": "MKT-020",
+    "label": "检索命中 → 证据未被接纳",
+    "description": "检索产生了候选依据，但没有任何依据被接纳为已验证证据，因此停止自主判断并进入人工复核。"
+  },
+  "result": {
+    "display_case_id": "MKT-020",
+    "case_id": "0eca1da5-d885-465d-974b-34804eb5e09c",
+    "processing_status": "ROUTED",
+    "case": {
+      "source_text": "COOL TENCEL™. Refreshing, smooth, with barely-there feel,\nintroducing our coolest fabric yet.",
+      "translation": "酷爽天丝™。清爽顺滑，几乎无感，隆重推出我们迄今最酷爽的面料。",
+      "content_type": "MARKETING",
+      "brand_or_domain": "brooklinen.com",
+      "context_notes": null
+    },
+    "risk": {
+      "level": "LOW",
+      "label_zh": "低风险",
+      "reason": "该内容为一般营销宣传文案，介绍面料特性。即使发生误译，潜在的用户或业务后果也相对有限，主要可能影响品牌传达准确性，但不会造成严重安全或财务风险。",
+      "clarification_question": null
+    },
+    "final_route": {
+      "code": "HUMAN_REQUIRED",
+      "label_zh": "必须人工复核",
+      "triggering_dimensions": [
+        "TERMINOLOGY",
+        "ACCURACY"
+      ],
+      "blocking_dimensions": [],
+      "sample_audit_dimensions": []
+    },
+    "route_reason_codes": [
+      "TERMINOLOGY_HUMAN_VERIFY",
+      "ACCURACY_HUMAN_VERIFY"
+    ],
+    "dimensions": [
+      {
+        "dimension": "TERMINOLOGY",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "术语核查：原文中的品牌名 TENCEL™ 被译为“天丝™”，这是该品牌在中文市场的官方通用译名，不存在译法错误或语义边界偏移。同一译文内该术语仅出现一次，无前后不一致问题。正确译法：TENCEL™ 的标准中文译名为“天丝™”，符合兰精公司官方品牌命名。替换测试：若替换为音译“坦塞尔”或保留原文“TENCEL™”虽也可接受，但“天丝”为既定通用译名，读者瞬间识别，无需停顿。三问路径：Q1判定，目标受众阅读时无感知异样，无需停顿；Q1已定级，Q2不适用。维度交叉备注：本处仅涉及品牌名，不涉及功能名或行业术语，无其他维度交叉。结论：Neutral。类型标注：无术语问题。",
+        "requires_external_evidence": true,
+        "unresolved_external_support": false,
+        "details": {
+          "evidence_need": "Verify the official Chinese brand name/trademark used for TENCEL™ by Lenzing or the brand owner in the Chinese market, e.g., whether “天丝” is the approved Chinese designation on official product pages, brand glossaries, or trademark records.",
+          "normative_claim": true,
+          "term_candidate": "COOL TENCEL™ (specifically the TENCEL™ brand component)",
+          "term_type": "无术语问题"
+        }
+      },
+      {
+        "dimension": "ACCURACY",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "原文命题清单：①产品名称为 COOL TENCEL™；②特性为 refreshing（清爽）、smooth（顺滑）、barely-there feel（几乎无感）；③该句为介绍性话语，称其为迄今最酷爽的面料（introducing our coolest fabric yet）。译文表现：译文“酷爽天丝™”对应产品名，“清爽顺滑”对应 refreshing 和 smooth，“几乎无感”对应 barely-there feel，“隆重推出我们迄今最酷爽的面料”对应 introducing our coolest fabric yet。各命题均完整传达，无遗漏、无扭曲。其中“隆重”为原文没有的修饰性词汇，属于修辞性增译（营销语气渲染），不引入新命题，不影响 Accuracy。三问路径：Q1 目标受众阅读流畅，无需停顿，无感知异样，直接定级 Neutral。Q2、Q3 不适用。维度交叉备注：名称翻译“天丝”为 TENCEL 的行业通用译名，“酷爽”为 Cool 的营销化翻译，均不改变读者对产品特性的理解，不涉及术语误译导致的准确性偏差。结论：译文完整准确传达原文全部命题内容，Accuracy 为 Neutral。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": true,
+        "details": {
+          "adjacent_correction": "不适用",
+          "boundary_risk": "无"
+        }
+      },
+      {
+        "dimension": "LOCALE",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "核查译文中所有格式元素：商标符号™保留且位置正确，句号使用中文全角句号，逗号使用中文全角逗号，数字、货币、日期、度量单位均未出现，未发现任何偏离中文格式惯例之处。Q1判定，读者阅读流畅，无需停顿辨析格式。结论：Neutral。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "boundary_risk": "无",
+          "locale_element": "无敏感元素"
+        }
+      },
+      {
+        "dimension": "AUDIENCE",
+        "severity": "Neutral",
+        "q1": "无需停顿",
+        "q2": "不适用（Q1 已定级）",
+        "notes": "适配性核查：译文为营销文案，对中文受众传达面料清爽顺滑、几乎无感的穿着体验，用词地道自然。语域/文化偏离说明：文中“酷爽”“几乎无感”“隆重推出”“迄今最酷爽”均为中文互联网营销与产品文案高频表达（行业观察），不构成语域偏离；“几乎无感”准确对应“barely-there feel”，无文化隐喻或颜色/数字象征歧义，无冒犯内容。三问路径：Q1判定，目标受众读完全句无需停顿，理解即时完成，应为Neutral；Q2不适用。维度交叉备注：无；结论：译文在目标文化语境下自然恰当，无适配问题。",
+        "requires_external_evidence": false,
+        "unresolved_external_support": false,
+        "details": {
+          "audience_element": "无适配问题"
+        }
+      }
+    ],
+    "reliability_decisions": [
+      {
+        "dimension": "TERMINOLOGY",
+        "verification_route": "HUMAN_VERIFY",
+        "label_zh": "人工验证",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": "TERMINOLOGY_EVIDENCE_INSUFFICIENT",
+        "policy_cell": "TERMINOLOGY×LOW"
+      },
+      {
+        "dimension": "ACCURACY",
+        "verification_route": "HUMAN_VERIFY",
+        "label_zh": "人工验证",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": "ACCURACY_UNRESOLVED_EXTERNAL_SUPPORT",
+        "policy_cell": "ACCURACY×LOW"
+      },
+      {
+        "dimension": "LOCALE",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "LOCALE×LOW"
+      },
+      {
+        "dimension": "AUDIENCE",
+        "verification_route": "AUTO_TRUST",
+        "label_zh": "自动信任",
+        "policy_reason": "Frozen MVP V1 pilot-calibrated dimension×case-risk lookup; observed agreement is audit metadata, not production reliability.",
+        "override_reason": null,
+        "policy_cell": "AUDIENCE×LOW"
+      }
+    ],
+    "post_eval_control": {
+      "terminology_requires_external_evidence": true,
+      "terminology_reason": "The Terminology Neutral judgment rests on the factual claim that “天丝” is the official Chinese name for the brand TENCEL™. This is a concrete, decision-material naming fact. The current case provides only the English source text, the Chinese translation, and the domain brooklinen.com; it contains no authoritative brand glossary or official Chinese product naming confirmation. The model-reported source cannot be treated as verified evidence. An official Lenzing brand page, Chinese product site, or trademark authority could resolve the fact, and a different official Chinese designation could change the Terminology judgment.",
+      "unresolved_support": {
+        "ACCURACY": true,
+        "LOCALE": false,
+        "AUDIENCE": false
+      }
+    },
+    "evidence": {
+      "status": "INSUFFICIENT",
+      "stop_reason": "Tool call budget exhausted (tool_call_count=4 equals max_tool_calls=4) and no verified evidence has been established; no further search action is allowed and STOP_SUFFICIENT is not possible with empty verified_evidence.",
+      "verified_evidence": [],
+      "actions": [
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "reason": "No tool results yet; need authoritative evidence for the official Chinese designation of TENCEL™ in zh-CN. Only SEARCH_OFFICIAL_DOCS is available, so query official Lenzing sources for the Chinese brand name.",
+          "query": "TENCEL™ Lenzing 天丝 官方中文品牌名称"
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "reason": "Current evidence is empty and the prior official docs search returned no positive evidence. Need a more targeted search for the official Chinese designation of TENCEL™ (e.g., 天丝) on official Lenzing/brand pages, so another SEARCH_OFFICIAL_DOCS action is warranted.",
+          "query": "TENCEL 天丝 Lenzing 中文名称 官方"
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "reason": "当前无任何已验证证据；第二次检索虽命中候选但尚未确认官方中文名称。需要继续在官方文档中检索 TENCEL™ 的中文品牌名（如“天丝”）及其与 Lenzing 的关联。剩余工具调用次数为2，可继续搜索。",
+          "query": "TENCEL 天丝 Lenzing 官方 中文 商标"
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "reason": "Current verified_evidence is empty, evidence_status is null, and no conflict exists. Three official-doc searches have been attempted: one HIT returned candidate evidence but it was only retrieval, not verified. One tool call remains within the budget, so the next action should be another targeted search of official documents to find authoritative evidence on the Chinese designation '天丝' for TENCEL™.",
+          "query": "TENCEL 天丝 Lenzing 中文官方品牌名称 商标"
+        },
+        {
+          "action": "ABSTAIN",
+          "reason": "Tool call budget exhausted (tool_call_count=4 equals max_tool_calls=4) and no verified evidence has been established; no further search action is allowed and STOP_SUFFICIENT is not possible with empty verified_evidence.",
+          "query": null
+        }
+      ],
+      "tool_calls": [
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "tool_name": "search_official_docs",
+          "query": "TENCEL™ Lenzing 天丝 官方中文品牌名称",
+          "result_status": "MISS",
+          "result_summary": "Demo Evidence Pack v1 has no matching positive evidence candidate.",
+          "decision_reason": "No tool results yet; need authoritative evidence for the official Chinese designation of TENCEL™ in zh-CN. Only SEARCH_OFFICIAL_DOCS is available, so query official Lenzing sources for the Chinese brand name."
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "tool_name": "search_official_docs",
+          "query": "TENCEL 天丝 Lenzing 中文名称 官方",
+          "result_status": "HIT",
+          "result_summary": "Demo Evidence Pack v1 returned 4 candidate(s); retrieval is not admission.",
+          "decision_reason": "Current evidence is empty and the prior official docs search returned no positive evidence. Need a more targeted search for the official Chinese designation of TENCEL™ (e.g., 天丝) on official Lenzing/brand pages, so another SEARCH_OFFICIAL_DOCS action is warranted."
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "tool_name": "search_official_docs",
+          "query": "TENCEL 天丝 Lenzing 官方 中文 商标",
+          "result_status": "MISS",
+          "result_summary": "Demo Evidence Pack v1 has no matching positive evidence candidate.",
+          "decision_reason": "当前无任何已验证证据；第二次检索虽命中候选但尚未确认官方中文名称。需要继续在官方文档中检索 TENCEL™ 的中文品牌名（如“天丝”）及其与 Lenzing 的关联。剩余工具调用次数为2，可继续搜索。"
+        },
+        {
+          "action": "SEARCH_OFFICIAL_DOCS",
+          "tool_name": "search_official_docs",
+          "query": "TENCEL 天丝 Lenzing 中文官方品牌名称 商标",
+          "result_status": "MISS",
+          "result_summary": "Demo Evidence Pack v1 has no matching positive evidence candidate.",
+          "decision_reason": "Current verified_evidence is empty, evidence_status is null, and no conflict exists. Three official-doc searches have been attempted: one HIT returned candidate evidence but it was only retrieval, not verified. One tool call remains within the budget, so the next action should be another targeted search of official documents to find authoritative evidence on the Chinese designation '天丝' for TENCEL™."
+        }
+      ]
+    },
+    "processing_error": null
+  }
+}
