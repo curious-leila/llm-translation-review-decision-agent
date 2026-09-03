@@ -6,7 +6,7 @@
 ![Role](https://img.shields.io/badge/Role-AI%20Product%20Manager-111827)
 ![Status](https://img.shields.io/badge/Status-Prototype-1f8f6a)
 
-**[在线体验]**（部署后开放） · **[查看源码](https://github.com/curious-leila/llm-translation-review-decision-agent)**
+**[在线体验](https://llm-translation-review-decision-agent.onrender.com)** · **[查看源码](https://github.com/curious-leila/llm-translation-review-decision-agent)**
 
 ---
 
@@ -148,7 +148,7 @@ flowchart LR
 | 能力     | 状态       | 说明                                                                              |
 | ------ | -------- | ------------------------------------------------------------------------------- |
 | 案例回放   | 可用       | 4 个冻结案例（CS-020 无需查证、MKT-020 证据验证、MKT-005 人工复核、UI-003 自动通过），前端直接渲染完整决策过程，无需后端    |
-| 在线真实验证 | 部署后开放    | 在页面粘贴原文与候选译文，后端接入真实模型 API 处理，返回完整决策链与路由结果                                       |
+| 在线真实验证 | https://llm-translation-review-decision-agent.onrender.com | 在页面粘贴原文与候选译文，后端接入真实模型 API 处理，返回完整决策链与路由结果                                       |
 | 会话记忆   | 未接入 Demo | 记忆模块代码已实现，当前演示工作流未启用长期记忆                                                        |
 | 实时证据检索 | 术语锚定已落地  | 真实模型端到端成功闭环仍待验证（近期 Live 阻塞于模型服务异常），结论见 [证据层设计复盘](docs/evidence_layer_review.md) |
 
