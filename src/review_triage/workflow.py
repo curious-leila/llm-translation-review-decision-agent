@@ -34,7 +34,6 @@ from review_triage.evidence import (
     TerminologyEvidenceLoop,
 )
 from review_triage.evidence_tools import ControlledEvidenceTools, EvidenceTools
-from review_triage.day2_instrumentation import build_day2_run_metrics
 from review_triage.nodes import (
     node_00_normalize,
     node_04_reliability,
@@ -633,11 +632,6 @@ class ReviewTriageWorkflow:
                 output_state=processing_error, decision_reason="Case-level branch failure failed closed; batch may continue.",
                 reason_code=processing_error.error_code,
             )
-            self.repository.save_day2_run_metrics(build_day2_run_metrics(
-                baseline_id=self.baseline_id, eval_run_id=eval_run_id,
-                case_id=state["review_case"].case_id, route=route,
-                evaluations=state["dimension_evaluations"], evidence=state.get("terminology_evidence"),
-            ))
             self.repository.finish_eval_run(eval_run_id, status="FAILED", error=processing_error)
             return WorkflowState(eval_run_id=eval_run_id, review_case=state["review_case"],
                 risk_result=state["risk_result"], dimension_evaluations=state["dimension_evaluations"],
@@ -650,11 +644,6 @@ class ReviewTriageWorkflow:
             terminology_evidence=state.get("terminology_evidence"), reliability_decisions=state["reliability_decisions"],
             route_decision=state["route_decision"],
         )
-        self.repository.save_day2_run_metrics(build_day2_run_metrics(
-            baseline_id=self.baseline_id, eval_run_id=eval_run_id, case_id=result.review_case.case_id,
-            route=result.route_decision, evaluations=result.dimension_evaluations,
-            evidence=result.terminology_evidence,
-        ))
         return result
 
     def run(
@@ -737,17 +726,6 @@ class ReviewTriageWorkflow:
             reliability_decisions=final.get("reliability_decisions", []),
             route_decision=final.get("route_decision"),
         )
-        if result.review_case and result.route_decision:
-            self.repository.save_day2_run_metrics(
-                build_day2_run_metrics(
-                    baseline_id=self.baseline_id,
-                    eval_run_id=eval_run_id,
-                    case_id=result.review_case.case_id,
-                    route=result.route_decision,
-                    evaluations=result.dimension_evaluations,
-                    evidence=result.terminology_evidence,
-                )
-            )
         return result
 
 
