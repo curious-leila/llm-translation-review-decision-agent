@@ -1,0 +1,17 @@
+name: Keep Render Awake
+
+# Render free instances sleep after ~15 minutes without traffic.
+# This workflow pings the public demo every 10 minutes so the
+# portfolio link opens instantly for reviewers.
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping demo
+        run: curl -s -o /dev/null -w "%{http_code}\n" https://llm-translation-review-decision-agent.onrender.com/ || true
