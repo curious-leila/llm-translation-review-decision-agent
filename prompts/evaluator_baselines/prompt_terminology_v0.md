@@ -1,6 +1,9 @@
-# LLM 评分 Prompt · 术语一致性（Terminology）维度 · v0
+# AI 评分 Prompt · Terminology 维度 · v0
 
-> 版本：v1（2026-09-04，Terminology 对抗性审查后初版）
+> 版本：v0（2026-08-06，Terminology 对抗性审查闭环后初版）
+> 依据：评测方案文档_v2.md §2.3 三问分流 + §3.1 Terminology 锚点 + 2026-08-06 补入的三条补丁规则
+> 后续迭代：跑完 180 次评分后，对照人工 notes 差异迭代
+
 ---
 
 ## SYSTEM PROMPT
@@ -103,3 +106,10 @@
 
 ---
 
+## 调用参数
+
+- 模型：qwen-max（DashScope OpenAI 兼容接口）
+- temperature: 0（评分任务确定性优先）
+- max_tokens: 800（notes 中文较长，留足空间）
+- 批量：逐条调用，180 次（45 译文 × 4 维度中 Terminology 占 45 次）
+- 输出落盘：`pilot/ai_scores.csv`（含 ai_severity / ai_notes / 人工 severity 对照列）
