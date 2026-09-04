@@ -1,9 +1,6 @@
-# AI 评分 Prompt · Audience Appropriateness 维度 · v0
+# LLM 评分 Prompt · 受众适配性 （Audience Appropriateness） 维度 · v1
 
-> 版本：v0（2026-08-06，Audience 对抗性审查闭环后初版）
-> 依据：评测方案文档_v2.md §2.3 三问分流 + §3.4 Audience Appropriateness 锚点 + 维度交叉一致性原则（Q1 判定跨维度一致）
-> 参考：pilot_scores.xlsx Audience notes（S124/S128/S132 踢出/踢案例、S136 行业观察标注）
-
+> 版本：v1（2026-09-04，Audience 对抗性审查后初版）
 ---
 
 ## SYSTEM PROMPT
@@ -71,7 +68,7 @@ Audience 判断译文内容本身（而非格式）是否适合目标受众与�
 
 ### 输出格式（严格 JSON，无其他文字）
 
-**输出顺序要求（v2 补丁）**：先在 notes 中完成完整判定叙述，**再依据 notes 结论反填 severity**。severity 必须与 notes 结论严格一致：若 notes 判定"未发现偏离/无问题/准确/已本地化/无术语问题/无适配问题"，severity 必须为 Neutral；若 notes 判定存在偏离或错误，severity 不得为 Neutral。输出前逐项自查，禁止 notes 结论与 severity 字段矛盾。
+**输出顺序要求**：先在 notes 中完成完整判定叙述，**再依据 notes 结论反填 severity**。severity 必须与 notes 结论严格一致：若 notes 判定"未发现偏离/无问题/准确/已本地化/无术语问题/无适配问题"，severity 必须为 Neutral；若 notes 判定存在偏离或错误，severity 不得为 Neutral。输出前逐项自查，禁止 notes 结论与 severity 字段矛盾。
 
 ```json
 {
@@ -115,10 +112,4 @@ Audience 判断译文内容本身（而非格式）是否适合目标受众与�
 
 ---
 
-## 调用参数
 
-- 模型：qwen-max（DashScope OpenAI 兼容接口）
-- temperature: 0（评分任务确定性优先）
-- max_tokens: 800
-- 批量：逐条调用，Audience 维度 45 次
-- 输出落盘：`pilot/ai_scores.csv`（含 ai_severity / ai_notes / 人工 severity 对照列）
