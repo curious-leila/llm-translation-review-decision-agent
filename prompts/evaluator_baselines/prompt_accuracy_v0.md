@@ -1,9 +1,6 @@
-# AI 评分 Prompt · Accuracy 维度 · v0
+# LLM 评分 Prompt · 准确性（Accuracy）维度 · v1
 
-> 版本：v0（2026-08-06，Accuracy 对抗性审查闭环后初版）
-> 依据：评测方案文档_v2.md §2.3 三问分流 + §3.2 Accuracy 锚点 + 紧邻修正补充规则 + 边界风险旁路条款 + 增译二分法 + 维度交叉替换测试
-> 参考：千问对抗性审查报告（S070/S082/S098/S154 案例）+ pilot_scores.xlsx Accuracy notes 表达规范
-
+> 版本：v1（2026-09-04，Accuracy 对抗性审查后初版）
 ---
 
 ## SYSTEM PROMPT
@@ -118,10 +115,3 @@ Accuracy 判断译文是否准确对应原文的**命题内容**（propositional
 
 ---
 
-## 调用参数
-
-- 模型：qwen-max（DashScope OpenAI 兼容接口）
-- temperature: 0（评分任务确定性优先）
-- max_tokens: 1000（notes 需完整列出命题清单，留足空间）
-- 批量：逐条调用，Accuracy 维度 45 次
-- 输出落盘：`pilot/ai_scores.csv`（含 ai_severity / ai_notes / 人工 severity 对照列）
