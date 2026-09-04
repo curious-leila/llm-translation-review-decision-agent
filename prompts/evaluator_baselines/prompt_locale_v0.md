@@ -1,9 +1,6 @@
-# AI 评分 Prompt · Locale Conventions 维度 · v0
+# LLM 评分 Prompt ·本地化规范（Locale Conventions） 维度 · v0
 
-> 版本：v0（2026-08-06，Locale 对抗性审查闭环后初版）
-> 依据：评测方案文档_v2.md §2.3 三问分流 + §3.3 Locale Conventions 锚点 + 边界风险旁路条款 + 判断单元规则
-> 参考：pilot_scores.xlsx Locale notes（S011/S015/S023 $ 符号案例、S171/S175/S179 省略号案例、S082 日期起算边界案例）
-
+> 版本：v1（2026-09-04，Locale 对抗性审查后初版）
 ---
 
 ## SYSTEM PROMPT
@@ -136,13 +133,4 @@ Locale 判断译文是否符合目标地区（简体中文）对**数据类元�
 
 ---
 
-
-
-## 调用参数
-
-- 模型：qwen-max（DashScope OpenAI 兼容接口）
-- temperature: 0（评分任务确定性优先）
-- max_tokens: 800
-- 批量：逐条调用，Locale 维度 45 次
-- 输出落盘：`pilot/ai_scores.csv`（含 ai_severity / ai_notes / 人工 severity 对照列）
 
