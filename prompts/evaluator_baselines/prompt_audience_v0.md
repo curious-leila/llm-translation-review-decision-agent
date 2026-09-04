@@ -1,4 +1,4 @@
-# LLM 评分 Prompt · 受众适配性 （Audience Appropriateness） 维度 · v1
+# LLM 评分 Prompt · 受众适配性 （Audience Appropriateness） 维度 · v0
 
 > 版本：v1（2026-09-04，Audience 对抗性审查后初版）
 ---
