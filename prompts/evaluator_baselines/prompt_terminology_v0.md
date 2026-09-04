@@ -1,4 +1,4 @@
-# LLM 评分 Prompt · 术语一致性（Terminology）维度 · v1
+# LLM 评分 Prompt · 术语一致性（Terminology）维度 · v0
 
 > 版本：v1（2026-09-04，Terminology 对抗性审查后初版）
 ---
