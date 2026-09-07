@@ -6,7 +6,7 @@
 ![Role](https://img.shields.io/badge/Role-AI%20Product%20Manager-111827)
 ![Status](https://img.shields.io/badge/Status-Prototype-1f8f6a)
 
-**[在线体验](https://llm-translation-review-decision-agent.onrender.com)** · **[查看源码](https://github.com/curious-leila/llm-translation-review-decision-agent)**
+**[在线体验](https://curious-leila.github.io/llm-translation-review-decision-agent/)** · **[Live API](https://llm-translation-review-decision-agent.onrender.com/docs)** · **[查看源码](https://github.com/curious-leila/llm-translation-review-decision-agent)**
 
 ---
 
@@ -148,7 +148,7 @@ flowchart LR
 | 能力     | 状态       | 说明                                                                              |
 | ------ | -------- | ------------------------------------------------------------------------------- |
 | 案例回放   | 可用       | 4 个冻结案例（CS-020 无需查证、MKT-020 证据验证、MKT-005 人工复核、UI-003 自动通过），前端直接渲染完整决策过程，无需后端    |
-| 在线真实验证 | https://llm-translation-review-decision-agent.onrender.com | 在页面粘贴原文与候选译文，后端接入真实模型 API 处理，返回完整决策链与路由结果                                       |
+| 在线真实验证 | [GitHub Pages Demo](https://curious-leila.github.io/llm-translation-review-decision-agent/) | 在静态页面粘贴原文与候选译文后，才请求 Render 上的真实模型 API，返回完整决策链与路由结果                              |
 | 会话记忆   | 未接入 Demo | 记忆模块代码已实现，当前演示工作流未启用长期记忆                                                        |
 | 实时证据检索 | 术语锚定已落地 | 公网真实提交已验证可用；需外部证据案例的端到端成功闭环仍待单独验证，结论见 [证据层设计复盘](docs/evidence_layer_review.md) |
 
@@ -161,8 +161,11 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    U["审校提交页"] --> API["FastAPI Demo 服务"]
-    API --> W["审校工作流"]
+    HR["HR / 用户"] --> UI["GitHub Pages 静态前端"]
+    UI --> STATIC["Landing / 产品说明 / Architecture"]
+    UI --> REP["冻结 Replay JSON"]
+    UI -- "仅主动提交 Live Review<br/>POST /api/review" --> API["Render FastAPI API"]
+    API --> W["LangGraph 审校工作流"]
     W --> GATE["证据需求门控"]
     GATE --> SEARCHER["证据查证器（模型自主循环）"]
     SEARCHER --> RET["术语锚定检索"]
@@ -171,11 +174,10 @@ flowchart LR
     SUF --> N2A["证据增强复评"]
     N2A --> POL["可靠性策略路由"]
     POL --> OUT["AUTO_PASS / SAMPLE / HUMAN"]
-    API -. "冻结案例" .-> REP["Replay 数据"]
     API -. "异常" .-> HUMAN["人工复核兜底"]
 ```
 
-Demo 为前后端一体应用：一个 FastAPI 服务同时提供审校接口与页面静态资源，本地一条命令即可运行，部署到 Render 一个服务即可对外提供完整体验。
+公开 Demo 采用部署边界拆分：GitHub Pages 直接提供 Landing、产品说明、冻结案例回放和 Architecture，因此查看产品不依赖 Render；只有用户主动提交 Live Review 时，浏览器才请求 Render 上的 FastAPI / Agent 后端。FastAPI 仍保留静态资源服务能力，便于本地一条命令预览和兼容既有部署，但它不再是公开 Demo 首屏的必经链路。
 
 ---
 
@@ -187,9 +189,10 @@ Demo 为前后端一体应用：一个 FastAPI 服务同时提供审校接口与
 
 ### Demo 应用
 
-- Python（FastAPI + Pydantic）：审校接口、输入校验与结果契约
+- GitHub Pages：静态托管 Landing、产品说明、Architecture 与冻结 Replay
+- Python（FastAPI + Pydantic，部署于 Render）：Live Review API、输入校验与结果契约
 - 原生 HTML / CSS / JavaScript：单页 Demo，无前端框架、无构建步骤、无包管理依赖
-- 冻结 Replay 数据驱动案例回放
+- 冻结 Replay 数据由静态前端直接读取，不依赖后端启动
 
 
 
@@ -306,7 +309,7 @@ python -m unittest discover -s tests
 │   ├── PRD.md                      # 产品需求文档
 │   └── evidence_layer_review.md    # 证据层设计复盘
 ├── src/review_triage/              # 审校工作流核心（内部标识沿用 review_triage）
-│   ├── demo/                       # Demo 应用（FastAPI 前后端一体，含接口限流）
+│   ├── demo/                       # Live API 与唯一静态前端源（含接口限流）
 │   ├── demo_evidence_pack_v1.py    # 冻结证据包加载器
 │   └── demo_evidence_retrieval_v2.py # 术语锚定检索
 ├── tests/                          # 自动化测试

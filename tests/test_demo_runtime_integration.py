@@ -382,6 +382,15 @@ class DemoStaticPresentationTests(unittest.TestCase):
         self.assertIn('data-display-case-id="MKT-005"', index)
         self.assertIn('data-display-case-id="UI-003"', index)
         self.assertIn('{ cache: "no-store" }', app)
+        self.assertNotIn('href="/assets/', index)
+        self.assertNotIn('src="/assets/', index)
+        self.assertNotIn('data-replay-url="/assets/', index)
+        self.assertIn(
+            'const API_BASE_URL = "https://llm-translation-review-decision-agent.onrender.com";',
+            app,
+        )
+        self.assertIn('fetch(`${API_BASE_URL}/api/review`', app)
+        self.assertNotIn('fetch("/api/review"', app)
         self.assertIn("证据未被接纳，术语判断需要人工进一步确认，本案例因此交给人工复核。", app)
         self.assertIn("if (evidenceCandidateReviews(data).length) renderEvidenceJudgmentDetails(evidenceStep.body, data);", app)
 

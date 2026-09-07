@@ -9,6 +9,8 @@ const replayStatus = document.querySelector("#replay-status");
 const viewSwitchButtons = [...document.querySelectorAll("[data-view-target]")];
 const evidenceAgentVisual = document.querySelector("[data-evidence-agent]");
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+const API_BASE_URL = "https://llm-translation-review-decision-agent.onrender.com";
+const LIVE_BACKEND_UNAVAILABLE_MESSAGE = "暂时无法连接 Live Agent。Render 后端可能仍在唤醒，请稍后重试。";
 let evidenceInteractionTimer = null;
 
 const dimensionLabels = {
@@ -513,7 +515,7 @@ function renderIncomplete(data) {
   const section = document.querySelector("#incomplete-section");
   const incomplete = !data.final_route || ["NEEDS_CONTEXT", "PROCESSING_ERROR", "OUT_OF_SCOPE"].includes(data.processing_status);
   section.hidden = !incomplete;
-  if (incomplete) text("#incomplete-message", data.processing_status === "NEEDS_CONTEXT" ? "Review Agent 需要补充业务上下文后，才能生成可安全展示的审校结论。" : "当前 Case 尚未产生可安全展示的最终分诊。");
+  if (incomplete) text("#incomplete-message", data.processing_status === "NEEDS_CONTEXT" ? "Review Agent 需要补充业务上下文后，才能生成可安全展示的审校结论。" : data.processing_error?.message || "当前 Case 尚未产生可安全展示的最终分诊。");
 }
 
 function renderResult(data, presentation = {}) {
@@ -529,14 +531,18 @@ function renderResult(data, presentation = {}) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault(); if (!form.reportValidity()) return;
-  submitButton.disabled = true; formStatus.textContent = "正在执行真实模型审校，请勿重复提交。模型与网络响应可能需要一定时间。";
+  submitButton.disabled = true; formStatus.textContent = "正在连接 Live Agent，Render 后端可能正在唤醒……";
   try {
     const values = Object.fromEntries(new FormData(form).entries());
     for (const key of ["brand_or_domain", "context_notes"]) values[key] = values[key].trim() || null;
-    const response = await fetch("/api/review", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
-    const data = await response.json(); if (!response.ok) throw new Error(data.error?.message || "请求失败"); renderReplayIdentity(null); renderResult(data);
+    const response = await fetch(`${API_BASE_URL}/api/review`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
+    const data = await response.json().catch(() => null);
+    if (!response.ok) throw new Error(data?.error?.message || LIVE_BACKEND_UNAVAILABLE_MESSAGE);
+    if (!data) throw new Error(LIVE_BACKEND_UNAVAILABLE_MESSAGE);
+    renderReplayIdentity(null); renderResult(data);
   } catch (error) {
-    renderReplayIdentity(null); renderResult({ processing_status: "PROCESSING_ERROR", final_route: null, route_reason_codes: [], dimensions: [], reliability_decisions: [], evidence: null, processing_error: { code: "REQUEST_FAILED", message: error.message }, case: null, risk: null });
+    const message = error instanceof TypeError ? LIVE_BACKEND_UNAVAILABLE_MESSAGE : error.message;
+    renderReplayIdentity(null); renderResult({ processing_status: "PROCESSING_ERROR", final_route: null, route_reason_codes: [], dimensions: [], reliability_decisions: [], evidence: null, processing_error: { code: "REQUEST_FAILED", message }, case: null, risk: null });
   } finally { submitButton.disabled = false; formStatus.textContent = ""; }
 });
 

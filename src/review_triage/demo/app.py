@@ -9,6 +9,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -19,6 +20,7 @@ from review_triage.schemas import ReviewCaseInput, WorkflowState
 
 STATIC_DIRECTORY = Path(__file__).with_name("static")
 MAX_FIELD_LENGTH = 2000
+GITHUB_PAGES_ORIGIN = "https://curious-leila.github.io"
 
 
 class ReviewProcessor(Protocol):
@@ -38,7 +40,7 @@ def create_app(
     shutdown_callback: Callable[[], None] | None = None,
     rate_limiter: RateLimiter | None = None,
 ) -> FastAPI:
-    """Create one-origin static + API app around an injected existing service."""
+    """Create the review API with compatibility static serving."""
 
     app = FastAPI(title="Review Triage Demo", version="0.1.0")
     limiter = rate_limiter or RateLimiter()
@@ -57,6 +59,13 @@ def create_app(
                     },
                 )
         return await call_next(request)
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[GITHUB_PAGES_ORIGIN],
+        allow_methods=["POST"],
+        allow_headers=["Content-Type"],
+    )
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(
@@ -114,5 +123,9 @@ def create_app(
     @app.get("/", include_in_schema=False)
     def index() -> FileResponse:
         return FileResponse(STATIC_DIRECTORY / "index.html")
+
+    # Keep the source static directory directly publishable by GitHub Pages while
+    # preserving the legacy /assets URLs on the Render-hosted app.
+    app.mount("/", StaticFiles(directory=STATIC_DIRECTORY, html=True), name="static")
 
     return app

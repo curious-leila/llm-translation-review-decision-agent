@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="面向大模型译文的审校决策 Agent：让每条译文走到合适的审校路径。">
   <title>面向大模型译文的审校决策 Agent</title>
-  <link rel="stylesheet" href="/assets/styles.css?v=product-polish-v11">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css?v=product-polish-v11">
 </head>
 <body>
   <main id="landing-view">
@@ -111,25 +112,25 @@
         <p class="case-gallery-lede">看 Review Agent 如何处理不同译文风险</p>
       </div>
       <div class="replay-options case-gallery">
-        <button class="replay-option case-gallery-card case-gallery-card-direct" type="button" data-replay-url="/assets/replays/refund-no-evidence.json?v=business-ids-v1" data-display-case-id="CS-020" aria-label="打开无需查证案例回放">
+        <button class="replay-option case-gallery-card case-gallery-card-direct" type="button" data-replay-url="./replays/refund-no-evidence.json?v=business-ids-v1" data-display-case-id="CS-020" aria-label="打开无需查证案例回放">
           <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="case-card-copy"><strong>无需查证</strong><small>依据充分时，Review Agent 直接完成判断。</small></span>
           <span class="case-card-open" aria-hidden="true">↗</span>
         </button>
 
-        <button class="replay-option case-gallery-card case-gallery-card-validation" type="button" data-replay-url="/assets/replays/mkt-020-evidence-validation.json?v=business-ids-v1" data-display-case-id="MKT-020" aria-label="打开证据验证案例回放">
+        <button class="replay-option case-gallery-card case-gallery-card-validation" type="button" data-replay-url="./replays/mkt-020-evidence-validation.json?v=business-ids-v1" data-display-case-id="MKT-020" aria-label="打开证据验证案例回放">
           <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="case-card-copy"><strong>证据验证</strong><small>检索命中后仍会验证，依据不足则停止自主判断。</small></span>
           <span class="case-card-open" aria-hidden="true">↗</span>
         </button>
 
-        <button class="replay-option case-gallery-card case-gallery-card-human" type="button" data-replay-url="/assets/replays/mkt-005-safe-failure.json?v=business-ids-v1" data-display-case-id="MKT-005" aria-label="打开人工复核案例回放">
+        <button class="replay-option case-gallery-card case-gallery-card-human" type="button" data-replay-url="./replays/mkt-005-safe-failure.json?v=business-ids-v1" data-display-case-id="MKT-005" aria-label="打开人工复核案例回放">
           <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="case-card-copy"><strong>人工复核</strong><small>证据不足时，Review Agent 停止自主判断并交给人工。</small></span>
           <span class="case-card-open" aria-hidden="true">↗</span>
         </button>
 
-        <button class="replay-option case-gallery-card case-gallery-card-closure" type="button" data-replay-url="/assets/replays/ui-003-agent-success.json?v=business-ids-v1" data-display-case-id="UI-003" aria-label="打开自动通过案例回放">
+        <button class="replay-option case-gallery-card case-gallery-card-closure" type="button" data-replay-url="./replays/ui-003-agent-success.json?v=business-ids-v1" data-display-case-id="UI-003" aria-label="打开自动通过案例回放">
           <span class="case-card-visual" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="case-card-copy"><strong>自动通过</strong><small>获得充分依据后，Review Agent 更新判断并自动通过。</small></span>
           <span class="case-card-open" aria-hidden="true">↗</span>
@@ -225,7 +226,7 @@
     <footer class="product-footer landing-footer shell">
       <p><span>REVIEW DECISION AGENT</span><small>让每条译文走到合适的审校路径。</small></p>
       <div class="footer-actions landing-footer-actions">
-        <a class="footer-link architecture-link" href="/assets/architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener">实现说明 · 查看 Review Agent 架构</a>
+        <a class="footer-link architecture-link" href="./architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener">实现说明 · 查看 Review Agent 架构</a>
         <button class="footer-link" type="button" data-scroll-top>回到顶部 <span aria-hidden="true">↑</span></button>
       </div>
     </footer>
@@ -326,7 +327,7 @@
          <header class="agent-trace-header"><p class="eyebrow">DECISION TRACE</p><h2 id="agent-trace-heading">Review Agent 的证据判断过程</h2><p>Review Agent 先完成质量判断，再根据证据需要与可靠性策略决定最终处理路径。</p></header>
         <div id="agent-trace" class="agent-trace"></div>
         <details class="policy-disclosure"><summary>查看完整可靠性策略</summary><div id="reliability-list"></div><p class="policy-boundary">策略来自冻结的前置试点评测，用于 V1 路由校准，不代表生产级可靠性。</p></details>
-        <a class="footer-link architecture-link trace-architecture-link" href="/assets/architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener"><span class="link-marker" aria-hidden="true">▶</span>查看 Review Agent 架构</a>
+        <a class="footer-link architecture-link trace-architecture-link" href="./architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener"><span class="link-marker" aria-hidden="true">▶</span>查看 Review Agent 架构</a>
       </section>
       <section id="incomplete-section" class="incomplete-section" hidden><p class="eyebrow">安全停止</p><h2>审校未完成</h2><p id="incomplete-message"></p></section>
     </section>
@@ -338,6 +339,6 @@
       </div>
     </footer>
   </main>
-  <script src="/assets/app.js?v=final-copy-v4" defer></script>
+  <script src="./app.js?v=final-copy-v4" defer></script>
 </body>
 </html>

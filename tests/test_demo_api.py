@@ -84,6 +84,70 @@ class StubService:
 
 
 class DemoAPITests(unittest.TestCase):
+    def test_github_pages_origin_can_preflight_live_review(self) -> None:
+        service = StubService(routed_state())
+        client = TestClient(create_app(service_provider=lambda: service))
+
+        response = client.options(
+            "/api/review",
+            headers={
+                "Origin": "https://curious-leila.github.io",
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "content-type",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.headers["access-control-allow-origin"],
+            "https://curious-leila.github.io",
+        )
+        self.assertIn("POST", response.headers["access-control-allow-methods"])
+
+        review_response = client.post(
+            "/api/review",
+            json=REQUEST,
+            headers={"Origin": "https://curious-leila.github.io"},
+        )
+        self.assertEqual(review_response.status_code, 200)
+        self.assertEqual(
+            review_response.headers["access-control-allow-origin"],
+            "https://curious-leila.github.io",
+        )
+
+    def test_unlisted_origin_is_not_allowed_by_cors(self) -> None:
+        service = StubService(routed_state())
+        client = TestClient(create_app(service_provider=lambda: service))
+
+        response = client.options(
+            "/api/review",
+            headers={
+                "Origin": "https://example.com",
+                "Access-Control-Request-Method": "POST",
+            },
+        )
+
+        self.assertNotIn("access-control-allow-origin", response.headers)
+
+    def test_pages_compatible_static_paths_remain_available_on_fastapi(self) -> None:
+        service = StubService(routed_state())
+        client = TestClient(create_app(service_provider=lambda: service))
+
+        self.assertEqual(client.get("/").status_code, 200)
+        self.assertEqual(client.get("/styles.css").status_code, 200)
+        self.assertEqual(client.get("/app.js").status_code, 200)
+        self.assertEqual(client.get("/assets/styles.css").status_code, 200)
+        self.assertEqual(
+            client.get("/replays/refund-no-evidence.json").status_code,
+            200,
+        )
+        self.assertEqual(
+            client.get(
+                "/architecture/review-decision-agent.architecture.html"
+            ).status_code,
+            200,
+        )
+
     def test_valid_request_reaches_service_and_returns_http_success(self) -> None:
         service = StubService(routed_state())
         client = TestClient(
