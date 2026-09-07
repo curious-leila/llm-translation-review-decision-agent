@@ -6,7 +6,7 @@
 ![Role](https://img.shields.io/badge/Role-AI%20Product%20Manager-111827)
 ![Status](https://img.shields.io/badge/Status-Prototype-1f8f6a)
 
-**[在线体验](https://curious-leila.github.io/llm-translation-review-decision-agent/)** · **[Live API](https://llm-translation-review-decision-agent.onrender.com/docs)** · **[查看源码](https://github.com/curious-leila/llm-translation-review-decision-agent)**
+**[在线体验](https://curious-leila.github.io/llm-translation-review-decision-agent/)** · **[查看源码](https://github.com/curious-leila/llm-translation-review-decision-agent)**
 
 ---
 
@@ -150,7 +150,7 @@ flowchart LR
 | 案例回放   | 可用       | 4 个冻结案例（CS-020 无需查证、MKT-020 证据验证、MKT-005 人工复核、UI-003 自动通过），前端直接渲染完整决策过程，无需后端    |
 | 在线真实验证 | [GitHub Pages Demo](https://curious-leila.github.io/llm-translation-review-decision-agent/) | 在静态页面粘贴原文与候选译文后，才请求 Render 上的真实模型 API，返回完整决策链与路由结果                              |
 | 会话记忆   | 未接入 Demo | 记忆模块代码已实现，当前演示工作流未启用长期记忆                                                        |
-| 实时证据检索 | 术语锚定已落地 | 公网真实提交已验证可用；需外部证据案例的端到端成功闭环仍待单独验证，结论见 [证据层设计复盘](docs/evidence_layer_review.md) |
+| 证据闭环   | 已验证      | UI-003 冻结真实运行覆盖外部证据需求、官方来源 HIT、证据准入、充分性成立、术语复评与 AUTO_PASS                      |
 
 
 ---
@@ -221,13 +221,14 @@ flowchart LR
 
 已完成的验证包括：
 
-- 114 个自动化测试覆盖 Demo API、证据包完整性校验、检索准入充分性集成、审校工作流与页面可读性，全部通过；
+- 124 个自动化测试覆盖 Demo API、证据包完整性校验、检索准入充分性集成、审校工作流与页面可读性，全部通过；
 - MKT-020 案例经多次真实模型运行：证据不足时系统安全弃权并转入人工复核，未伪造成功结果；
+- UI-003 冻结真实运行完整覆盖“外部证据需求 → 官方来源 HIT → 证据准入 → 充分性成立 → 术语复评 → AUTO_PASS”；
 - 证据链职责分离经真实失败验证：检索命中、语义相关、准入拒绝三种结果可在同一案例中并存；
 - 历史案例停止规则修复：证据充分后工具调用从 4 次收敛到 1 次；
 - 证据包冻结事实与运行时逐字段一致，文件篡改会被完整性校验拦截。
 
-已知边界：公网 Demo 已接通真实模型 API，真实提交可正常返回路由结果；但“需要外部证据的案例完整走通查证并命中证据”的端到端成功闭环尚未单独验证。Demo 页面默认展示冻结案例回放以保障演示稳定，同时开放真实提交入口。完整验收结论见 [证据层设计复盘](docs/evidence_layer_review.md)。
+已知边界：当前证据来自开发集诊断、冻结真实运行回放与工程验收，尚未完成真实用户测试或正式 Holdout，因此不把这些结果包装为生产效果或统计显著结论。完整验收结论见 [证据层设计复盘](docs/evidence_layer_review.md)。
 
 如果进入真实用户测试阶段，我会重点观察：
 
