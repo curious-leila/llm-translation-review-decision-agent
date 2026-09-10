@@ -548,6 +548,7 @@ form.addEventListener("submit", async (event) => {
 
 for (const button of replayButtons) button.addEventListener("click", async () => {
   setReplayLoading(button);
+  let replayError = false;
   try {
     const response = await fetch(button.dataset.replayUrl, { cache: "no-store" });
     if (!response.ok) throw new Error(`Replay fetch failed: ${response.status}`);
@@ -555,10 +556,10 @@ for (const button of replayButtons) button.addEventListener("click", async () =>
     if (snapshot?.replay_metadata?.type !== "VERIFIED_REPLAY" || !snapshot.result) throw new Error("Invalid replay snapshot");
     renderReplayIdentity(snapshot.replay_metadata); renderResult(snapshot.result, { displayCaseId: snapshot.replay_metadata.display_case_id || button.dataset.displayCaseId });
   } catch {
-    replayStatus.textContent = "示例案例加载失败，请稍后重试。";
+    replayError = true;
   } finally {
-    for (const replayButton of replayButtons) replayButton.disabled = false;
-    document.querySelector(".replay-selector").setAttribute("aria-busy", "false");
+    setReplayLoading();
+    if (replayError) replayStatus.textContent = "示例案例加载失败，请稍后重试。";
   }
 });
 

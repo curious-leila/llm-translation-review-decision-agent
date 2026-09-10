@@ -859,3 +859,91 @@
   .result-footer strong{font-size:14px}
 }
 @media(prefers-reduced-motion:reduce){.footer-link span{transition:none}}
+
+/* Portfolio readability and responsive pass. */
+#landing-view .decision-mechanism .workspace-stage>p,
+#landing-view .decision-mechanism .flow-stage-prep>p{
+  font-size:12px;
+  line-height:1.5;
+  color:#53666d;
+}
+#landing-view .decision-mechanism .flow-gate>p{
+  font-size:12px;
+  line-height:1.5;
+  color:#4d655d;
+}
+#landing-view .flow-branch-label{
+  font-size:12px;
+  color:#405c54;
+}
+#landing-view .flow-agent>span{
+  margin-top:5px;
+  font-size:12px;
+  line-height:1.5;
+  color:#4d685e;
+}
+#landing-view .mechanism-routes .flow-destination strong{
+  font-size:12px;
+  line-height:1.35;
+}
+#landing-view .metric-boundary{
+  padding:18px 20px;
+  background:rgba(238,243,240,.5);
+  font-size:13px;
+  line-height:1.6;
+  color:#41565f;
+}
+#landing-view .metric-boundary strong{font-weight:700}
+#landing-view .metric-boundary small{
+  margin-top:5px;
+  font-size:12.5px;
+  color:#586b74;
+}
+#landing-view .input-section .optional-context summary{
+  display:flex;
+  min-height:44px;
+  align-items:center;
+}
+
+@media(min-width:961px) and (max-width:1199px){
+  #landing-view .product-hero{
+    grid-template-columns:minmax(0,.46fr) minmax(0,.54fr);
+    gap:24px;
+  }
+  #landing-view .product-hero h1{font-size:clamp(42px,3.8vw,46px)}
+  #landing-view .hero-copy{padding-top:54px}
+  #landing-view .decision-mechanism{margin-top:54px}
+}
+
+@media(min-width:901px) and (max-width:960px){
+  #landing-view .product-hero{
+    grid-template-columns:1fr;
+    gap:36px;
+    padding:48px 0 58px;
+  }
+  #landing-view .hero-copy{
+    max-width:760px;
+    padding-top:0;
+  }
+  #landing-view .decision-mechanism{
+    width:min(100%,840px);
+    margin-top:0;
+  }
+}
+
+@media(max-width:760px){
+  #landing-view .product-hero{
+    gap:32px;
+    padding:36px 0 48px;
+  }
+  #landing-view .decision-mechanism{padding:18px 14px 20px}
+  #landing-view .decision-mechanism .workspace-stage{padding-block:13px}
+  #landing-view .decision-mechanism .flow-gate{padding:13px 10px 0}
+  #landing-view .metric-boundary{padding:17px 16px}
+}
+
+@media(max-width:480px){
+  #landing-view .hero-actions{gap:8px}
+  #landing-view .hero-actions a{min-height:48px}
+  #landing-view .case-gallery-card{grid-template-rows:116px minmax(104px,auto)}
+}
