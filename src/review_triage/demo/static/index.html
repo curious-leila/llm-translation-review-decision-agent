@@ -9,17 +9,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=typography-system-v2">
+  <link rel="stylesheet" href="./styles.css?v=mobile-navigation-v1">
 </head>
 <body>
   <header class="site-header">
     <div class="site-header-inner shell">
       <a class="wordmark" href="#top" aria-label="返回页面顶部">REVIEW DECISION AGENT</a>
-      <nav class="primary-nav" aria-label="主导航">
+      <nav id="primary-navigation" class="primary-nav" aria-label="主导航">
         <a class="nav-link is-active" href="#workspace" aria-current="page">产品演示</a>
         <a class="nav-link" href="#cases">案例回放</a>
         <a class="nav-link" href="./architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener">方法与架构</a>
       </nav>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="打开主导航" aria-expanded="false" aria-controls="primary-navigation">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
     </div>
   </header>
 
@@ -163,7 +168,10 @@
 
     <footer class="site-footer shell">
       <p><strong>REVIEW DECISION AGENT</strong><span>让每条译文走到合适的审校路径。</span></p>
-      <a href="./architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener">实现说明 · 查看 Review Agent 架构</a>
+      <div class="footer-links">
+        <a href="./architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener">实现说明 · 查看 Review Agent 架构</a>
+        <a class="back-to-top" href="#top">回到顶部</a>
+      </div>
     </footer>
   </main>
 
@@ -205,6 +213,6 @@
   </dialog>
 
   <noscript><p class="noscript">请启用 JavaScript 以切换四个冻结案例；Live Review 仍为可选能力。</p></noscript>
-  <script src="./app.js?v=trajectory-workbench-v1" defer></script>
+  <script src="./app.js?v=mobile-navigation-v1" defer></script>
 </body>
 </html>

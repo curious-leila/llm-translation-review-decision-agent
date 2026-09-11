@@ -425,6 +425,11 @@ class DemoStaticPresentationTests(unittest.TestCase):
         self.assertIn("证据不足 · 安全弃权 → 人工复核", app)
         self.assertIn("ArrowRight", app)
         self.assertIn("aria-selected", app)
+        self.assertIn('id="mobile-menu-toggle"', index)
+        self.assertIn('aria-expanded="false"', index)
+        self.assertIn('class="back-to-top" href="#top"', index)
+        self.assertIn("function setMobileMenu", app)
+        self.assertIn('.trust-points{display:flex', styles)
 
     def test_verified_replays_expose_business_ids_without_mutating_case_ids(self) -> None:
         expected = {

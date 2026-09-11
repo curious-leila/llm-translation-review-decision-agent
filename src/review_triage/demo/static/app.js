@@ -47,8 +47,43 @@ const dialog = document.querySelector("#live-review-dialog");
 const form = document.querySelector("#review-form");
 const formStatus = document.querySelector("#form-status");
 const submitButton = document.querySelector("#submit-button");
+const siteHeader = document.querySelector(".site-header");
+const primaryNavigation = document.querySelector("#primary-navigation");
+const mobileMenuToggle = document.querySelector("#mobile-menu-toggle");
 let replayRequestSequence = 0;
 let currentTrajectory = null;
+
+function setMobileMenu(open, { restoreFocus = false } = {}) {
+  siteHeader.classList.toggle("is-menu-open", open);
+  mobileMenuToggle.setAttribute("aria-expanded", String(open));
+  mobileMenuToggle.setAttribute("aria-label", open ? "关闭主导航" : "打开主导航");
+  if (!open && restoreFocus) mobileMenuToggle.focus();
+}
+
+mobileMenuToggle.addEventListener("click", () => {
+  setMobileMenu(mobileMenuToggle.getAttribute("aria-expanded") !== "true");
+});
+
+primaryNavigation.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => setMobileMenu(false));
+});
+
+document.addEventListener("click", (event) => {
+  if (siteHeader.classList.contains("is-menu-open") && !siteHeader.contains(event.target)) {
+    setMobileMenu(false);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && siteHeader.classList.contains("is-menu-open")) {
+    setMobileMenu(false, { restoreFocus: true });
+  }
+});
+
+const desktopNavigation = window.matchMedia("(min-width: 761px)");
+desktopNavigation.addEventListener("change", (event) => {
+  if (event.matches) setMobileMenu(false);
+});
 
 function setText(selector, value) {
   const node = document.querySelector(selector);
