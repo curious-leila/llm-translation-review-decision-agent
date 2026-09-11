@@ -161,6 +161,14 @@ class DemoAPITests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["case_id"], "api-case-1")
+        self.assertEqual(
+            response.json()["trajectory"]["schema_version"],
+            "review-agent-trajectory/v1",
+        )
+        self.assertEqual(
+            response.json()["trajectory"]["final_route"]["code"],
+            response.json()["final_route"]["code"],
+        )
         self.assertEqual(len(service.calls), 1)
         self.assertEqual(service.calls[0]["raw_input"].translation, REQUEST["translation"])
         self.assertEqual(service.calls[0]["eval_run_id"], "offline-test-run-id")
@@ -223,6 +231,8 @@ class DemoAPITests(unittest.TestCase):
         self.assertIsNone(payload["final_route"])
         self.assertEqual(payload["processing_error"]["code"], "LLM_API_FAILURE")
         self.assertEqual(payload["processing_error"]["safe_disposition"], "STOP_PROCESSING")
+        self.assertEqual(payload["trajectory"]["steps"], [])
+        self.assertIsNone(payload["trajectory"]["final_route"])
 
     def test_adapter_preserves_backend_route_without_deriving_or_overriding(self) -> None:
         service = StubService(

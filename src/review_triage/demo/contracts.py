@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any
+import re
+from typing import Any, Literal
 
 from pydantic import Field
 
@@ -137,6 +138,53 @@ class ReviewPostEvalDTO(StrictModel):
     unresolved_support: dict[str, bool]
 
 
+class ReviewTrajectoryToolCallDTO(StrictModel):
+    sequence: int
+    action: str
+    tool_name: str
+    tool_label_zh: str
+    query: str
+    result_status: str
+    result_label_zh: str
+    result_summary: str
+    candidate_count: int | None
+    admitted_count: int
+
+
+class ReviewTrajectoryEvidenceDTO(StrictModel):
+    required: bool
+    need_reason: str
+    status: str
+    status_label_zh: str
+    tool_calls: list[ReviewTrajectoryToolCallDTO]
+    verified_evidence: list[ReviewEvidenceDTO]
+
+
+class ReviewTrajectoryStepDTO(StrictModel):
+    step_id: str
+    kind: str
+    status: str
+    title_zh: str
+    summary_zh: str
+    fact_refs: list[str]
+
+
+class ReviewAgentTrajectoryDTO(StrictModel):
+    schema_version: Literal["review-agent-trajectory/v1"] = (
+        "review-agent-trajectory/v1"
+    )
+    case_id: str | None
+    processing_status: ProcessingStatus
+    case: ReviewCaseDTO | None
+    risk: ReviewRiskDTO | None
+    dimensions: list[ReviewDimensionDTO]
+    evidence: ReviewTrajectoryEvidenceDTO
+    reliability_decisions: list[ReviewReliabilityDTO]
+    final_route: ReviewRouteDTO | None
+    route_reason_codes: list[str]
+    steps: list[ReviewTrajectoryStepDTO]
+
+
 class ReviewProcessingErrorDTO(StrictModel):
     code: str
     node_name: str
@@ -156,6 +204,217 @@ class ReviewResultDTO(StrictModel):
     post_eval_control: ReviewPostEvalDTO | None
     evidence: ReviewEvidenceDTOGroup | None
     processing_error: ReviewProcessingErrorDTO | None
+    trajectory: ReviewAgentTrajectoryDTO | None = None
+
+
+TOOL_LABELS_ZH = {
+    "official_docs": "官方资料检索",
+    "search_official_docs": "官方资料检索",
+    "glossary": "术语表检索",
+    "search_glossary": "术语表检索",
+    "case_memory": "历史案例检索",
+    "search_case_memory": "历史案例检索",
+}
+TRAJECTORY_ROUTE_LABELS_ZH = {
+    FinalPolicyRoute.AUTO_PASS: "自动通过",
+    FinalPolicyRoute.SAMPLE_POOL: "抽样复核",
+    FinalPolicyRoute.HUMAN_REQUIRED: "人工复核",
+}
+
+
+def _candidate_count(tool_call: ReviewToolCallDTO) -> int | None:
+    if tool_call.candidate_reviews:
+        return len(tool_call.candidate_reviews)
+    match = re.search(r"(\d+)\s+candidate", tool_call.result_summary, re.IGNORECASE)
+    return int(match.group(1)) if match else None
+
+
+def _quality_summary(dimensions: list[ReviewDimensionDTO]) -> str:
+    if not dimensions:
+        return "本轮没有可展示的四维审校结果。"
+    issue_dimensions = [
+        item.dimension.value for item in dimensions if item.severity != "Neutral"
+    ]
+    if not issue_dimensions:
+        return "已完成术语、准确性、本地化与受众四维审校，四项均无阻断问题。"
+    return "已完成四维审校；需要关注：" + "、".join(issue_dimensions) + "。"
+
+
+def _reliability_summary(items: list[ReviewReliabilityDTO]) -> str:
+    counts = {
+        route: sum(item.verification_route == route for item in items)
+        for route in VerificationRoute
+    }
+    parts = [
+        f"自动信任 {counts[VerificationRoute.AUTO_TRUST]} 项",
+        f"抽样复核 {counts[VerificationRoute.SAMPLE_AUDIT]} 项",
+        f"人工确认 {counts[VerificationRoute.HUMAN_VERIFY]} 项",
+    ]
+    return " · ".join(parts) + "。"
+
+
+def _route_summary(route: ReviewRouteDTO) -> str:
+    label = TRAJECTORY_ROUTE_LABELS_ZH[route.code]
+    dimensions = route.triggering_dimensions
+    if route.code == FinalPolicyRoute.AUTO_PASS:
+        return "四个维度均满足非阻断与自动信任条件，本案例自动通过。"
+    if dimensions:
+        return "、".join(item.value for item in dimensions) + f"触发最严格路径，本案例进入{label}。"
+    return f"后端既定路由规则将本案例送入{label}。"
+
+
+def build_review_agent_trajectory(
+    result: ReviewResultDTO,
+) -> ReviewAgentTrajectoryDTO:
+    """Build the versioned display trajectory from existing backend facts only."""
+
+    control = result.post_eval_control
+    required = control.terminology_requires_external_evidence if control else False
+    evidence_group = result.evidence
+    evidence_status = (
+        evidence_group.status
+        if evidence_group and evidence_group.status
+        else "NOT_REQUIRED" if control and not required else "UNAVAILABLE"
+    )
+    status_labels = {
+        "SUFFICIENT": "证据充分",
+        "INSUFFICIENT": "证据不足 · 安全弃权",
+        "NOT_REQUIRED": "无需外部查证",
+        "UNAVAILABLE": "暂无证据状态",
+    }
+    trajectory_calls: list[ReviewTrajectoryToolCallDTO] = []
+    for sequence, call in enumerate(
+        evidence_group.tool_calls if evidence_group else [], start=1
+    ):
+        trajectory_calls.append(
+            ReviewTrajectoryToolCallDTO(
+                sequence=sequence,
+                action=call.action,
+                tool_name=call.tool_name,
+                tool_label_zh=TOOL_LABELS_ZH.get(call.tool_name, "受控证据检索"),
+                query=call.query,
+                result_status=call.result_status,
+                result_label_zh="命中候选" if call.result_status == "HIT" else "未命中",
+                result_summary=call.result_summary,
+                candidate_count=_candidate_count(call),
+                admitted_count=sum(
+                    candidate.admitted is True for candidate in call.candidate_reviews
+                ),
+            )
+        )
+
+    steps: list[ReviewTrajectoryStepDTO] = []
+    if result.risk or result.dimensions:
+        risk_copy = result.risk.label_zh if result.risk else "风险待确认"
+        steps.append(
+            ReviewTrajectoryStepDTO(
+                step_id="risk-and-quality",
+                kind="ASSESSMENT",
+                status="COMPLETE",
+                title_zh="风险扫描与四维审校",
+                summary_zh=f"识别为{risk_copy}。{_quality_summary(result.dimensions)}",
+                fact_refs=["risk", "dimensions"],
+            )
+        )
+    if control:
+        steps.append(
+            ReviewTrajectoryStepDTO(
+                step_id="evidence-gate",
+                kind="EVIDENCE_GATE",
+                status="COMPLETE" if required else "SKIPPED",
+                title_zh="需要外部证据" if required else "无需外部查证",
+                summary_zh=(
+                    control.terminology_reason
+                    if required
+                    else "当前术语判断不依赖未解决的外部事实，跳过证据检索。"
+                ),
+                fact_refs=["post_eval_control.terminology"],
+            )
+        )
+    for call in trajectory_calls:
+        count_copy = (
+            f"，返回 {call.candidate_count} 条候选"
+            if call.candidate_count is not None
+            else ""
+        )
+        steps.append(
+            ReviewTrajectoryStepDTO(
+                step_id=f"tool-call-{call.sequence}",
+                kind="TOOL_CALL",
+                status=call.result_status,
+                title_zh=f"{call.tool_label_zh} · {call.result_label_zh}",
+                summary_zh=f"查询“{call.query}”{count_copy}。",
+                fact_refs=[f"evidence.tool_calls[{call.sequence - 1}]"],
+            )
+        )
+    if required:
+        verified_count = len(evidence_group.verified_evidence) if evidence_group else 0
+        sufficient = evidence_status == "SUFFICIENT"
+        steps.append(
+            ReviewTrajectoryStepDTO(
+                step_id="evidence-outcome",
+                kind="EVIDENCE_OUTCOME",
+                status="COMPLETE" if sufficient else "SAFE_ABSTAIN",
+                title_zh="证据充分" if sufficient else "证据不足 · 安全弃权",
+                summary_zh=(
+                    f"接纳 {verified_count} 条可信证据，进入最终术语判断。"
+                    if sufficient
+                    else "未获得可接纳的充分证据，停止自主判断，不自动放行。"
+                ),
+                fact_refs=["evidence.verified_evidence", "evidence.status"],
+            )
+        )
+    if result.reliability_decisions:
+        steps.append(
+            ReviewTrajectoryStepDTO(
+                step_id="reliability",
+                kind="RELIABILITY",
+                status="COMPLETE",
+                title_zh="应用可靠性授权",
+                summary_zh=_reliability_summary(result.reliability_decisions),
+                fact_refs=["reliability_decisions"],
+            )
+        )
+    if result.final_route:
+        route_title = TRAJECTORY_ROUTE_LABELS_ZH[result.final_route.code]
+        route_summary = _route_summary(result.final_route)
+        if (
+            evidence_status == "INSUFFICIENT"
+            and result.final_route.code == FinalPolicyRoute.HUMAN_REQUIRED
+        ):
+            route_summary = "证据不足 · 安全弃权 → 人工复核。"
+        steps.append(
+            ReviewTrajectoryStepDTO(
+                step_id="final-route",
+                kind="FINAL_ROUTE",
+                status="COMPLETE",
+                title_zh=route_title,
+                summary_zh=route_summary,
+                fact_refs=["final_route", "route_reason_codes"],
+            )
+        )
+
+    return ReviewAgentTrajectoryDTO(
+        case_id=result.case_id,
+        processing_status=result.processing_status,
+        case=result.case,
+        risk=result.risk,
+        dimensions=result.dimensions,
+        evidence=ReviewTrajectoryEvidenceDTO(
+            required=required,
+            need_reason=control.terminology_reason if control else "",
+            status=evidence_status,
+            status_label_zh=status_labels[evidence_status],
+            tool_calls=trajectory_calls,
+            verified_evidence=(
+                evidence_group.verified_evidence if evidence_group else []
+            ),
+        ),
+        reliability_decisions=result.reliability_decisions,
+        final_route=result.final_route,
+        route_reason_codes=result.route_reason_codes,
+        steps=steps,
+    )
 
 
 def to_review_result(state: WorkflowState) -> ReviewResultDTO:
@@ -171,7 +430,7 @@ def to_review_result(state: WorkflowState) -> ReviewResultDTO:
     )
     evidence_state = state.terminology_evidence
     control = state.post_eval_control
-    return ReviewResultDTO(
+    result = ReviewResultDTO(
         case_id=case_id,
         processing_status=processing_status,
         case=(ReviewCaseDTO(
@@ -255,3 +514,4 @@ def to_review_result(state: WorkflowState) -> ReviewResultDTO:
             safe_disposition=state.processing_error.safe_disposition,
         ) if state.processing_error else None),
     )
+    return result.model_copy(update={"trajectory": build_review_agent_trajectory(result)})

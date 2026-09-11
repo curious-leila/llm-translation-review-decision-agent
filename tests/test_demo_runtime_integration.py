@@ -12,7 +12,11 @@ from review_triage.day2_baselines import (
     load_frozen_available_evidence_actions,
     load_shared_evidence_tools,
 )
-from review_triage.demo.contracts import to_review_result
+from review_triage.demo.contracts import (
+    ReviewResultDTO,
+    build_review_agent_trajectory,
+    to_review_result,
+)
 from review_triage.demo_evidence_retrieval_v2 import DemoEvidenceRetrievalV2
 from review_triage.evidence import TerminologyEvidenceLoop, action_input_state
 from review_triage.evidence_tools import ControlledEvidenceTools
@@ -359,24 +363,27 @@ class DemoStaticPresentationTests(unittest.TestCase):
     project_root = Path(__file__).resolve().parents[1]
     static_root = project_root / "src" / "review_triage" / "demo" / "static"
 
-    def test_landing_copy_and_result_labels_are_hr_readable(self) -> None:
+    def test_landing_is_an_hr_first_replay_workbench(self) -> None:
         index = (self.static_root / "index.html").read_text(encoding="utf-8")
         app = (self.static_root / "app.js").read_text(encoding="utf-8")
 
-        self.assertIn("为什么需要 Review Agent？", index)
-        self.assertIn(
-            "前置评测证据，用于形成产品策略；不是当前 Agent 上线后的效果指标。",
-            index,
-        )
-        self.assertIn("查看依据", index)
-        self.assertNotIn("查看技术依据", index)
-        self.assertNotIn("检索命中 ≠ 可信证据", index)
-        self.assertNotIn("CS-020 · 无需查证", index)
-        self.assertNotIn("MKT-020 · 证据验证", index)
-        self.assertNotIn("MKT-005 · 人工复核", index)
-        self.assertNotIn("UI-003 · 自动通过", index)
-        self.assertNotIn("copy-case-id", index)
-        self.assertNotIn("copyCaseId", app)
+        self.assertIn("让每条 AI 译文，都有证据地通过。", index)
+        self.assertIn("按需取证", index)
+        self.assertIn("轨迹可回放", index)
+        self.assertIn("安全弃权", index)
+        self.assertIn("待审译文", index)
+        self.assertIn("Agent 行动轨迹", index)
+        self.assertIn("审校结论与可信证据", index)
+        self.assertIn("证据不足 · 安全弃权", index)
+        self.assertIn("转人工复核", index)
+        self.assertIn("前置评测用于形成冻结路由策略，不是当前 Agent 上线后的效果指标。", index)
+        self.assertIn('role="tablist"', index)
+        self.assertIn('role="status"', index)
+        self.assertIn("data-default-replay", index)
+        self.assertIn("data-open-live", index)
+        self.assertNotIn('id="result-view"', index)
+        self.assertNotIn('class="decision-mechanism"', index)
+        self.assertNotIn('class="architecture"', index)
         self.assertIn('data-display-case-id="CS-020"', index)
         self.assertIn('data-display-case-id="MKT-020"', index)
         self.assertIn('data-display-case-id="MKT-005"', index)
@@ -391,8 +398,11 @@ class DemoStaticPresentationTests(unittest.TestCase):
         )
         self.assertIn('fetch(`${API_BASE_URL}/api/review`', app)
         self.assertNotIn('fetch("/api/review"', app)
-        self.assertIn("证据未被接纳，术语判断需要人工进一步确认，本案例因此交给人工复核。", app)
-        self.assertIn("if (evidenceCandidateReviews(data).length) renderEvidenceJudgmentDetails(evidenceStep.body, data);", app)
+        self.assertIn("snapshot?.result?.trajectory", app)
+        self.assertIn("data?.trajectory", app)
+        self.assertIn("证据不足 · 安全弃权 → 人工复核", app)
+        self.assertIn("ArrowRight", app)
+        self.assertIn("aria-selected", app)
 
     def test_verified_replays_expose_business_ids_without_mutating_case_ids(self) -> None:
         expected = {
@@ -406,6 +416,52 @@ class DemoStaticPresentationTests(unittest.TestCase):
             self.assertEqual(snapshot["replay_metadata"]["display_case_id"], display_case_id)
             self.assertEqual(snapshot["result"]["display_case_id"], display_case_id)
             self.assertEqual(snapshot["replay_metadata"]["source_case_id"], snapshot["result"]["case_id"])
+
+    def test_all_verified_replays_share_the_deterministic_trajectory_contract(self) -> None:
+        expected_outcomes = {
+            "refund-no-evidence.json": ("NOT_REQUIRED", "SAMPLE_POOL"),
+            "mkt-020-evidence-validation.json": ("INSUFFICIENT", "HUMAN_REQUIRED"),
+            "mkt-005-safe-failure.json": ("INSUFFICIENT", "HUMAN_REQUIRED"),
+            "ui-003-agent-success.json": ("SUFFICIENT", "AUTO_PASS"),
+        }
+        for filename, (evidence_status, route_code) in expected_outcomes.items():
+            with self.subTest(filename=filename):
+                snapshot = json.loads(
+                    (self.static_root / "replays" / filename).read_text(encoding="utf-8")
+                )
+                raw_result = snapshot["result"]
+                trajectory = raw_result["trajectory"]
+                contract_payload = {
+                    key: value
+                    for key, value in raw_result.items()
+                    if key in ReviewResultDTO.model_fields and key != "trajectory"
+                }
+                rebuilt = build_review_agent_trajectory(
+                    ReviewResultDTO.model_validate(contract_payload)
+                ).model_dump(mode="json")
+
+                self.assertEqual(trajectory, rebuilt)
+                self.assertEqual(
+                    trajectory["schema_version"], "review-agent-trajectory/v1"
+                )
+                self.assertEqual(trajectory["case"], raw_result["case"])
+                self.assertEqual(trajectory["risk"], raw_result["risk"])
+                self.assertEqual(trajectory["dimensions"], raw_result["dimensions"])
+                self.assertEqual(
+                    trajectory["reliability_decisions"],
+                    raw_result["reliability_decisions"],
+                )
+                self.assertEqual(trajectory["evidence"]["status"], evidence_status)
+                self.assertEqual(trajectory["final_route"]["code"], route_code)
+                self.assertTrue(trajectory["steps"])
+                self.assertTrue(
+                    all(step["fact_refs"] for step in trajectory["steps"])
+                )
+                if evidence_status == "INSUFFICIENT":
+                    self.assertIn(
+                        "证据不足 · 安全弃权 → 人工复核。",
+                        [step["summary_zh"] for step in trajectory["steps"]],
+                    )
 
 
 if __name__ == "__main__":
