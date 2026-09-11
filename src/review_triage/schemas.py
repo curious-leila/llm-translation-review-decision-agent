@@ -667,6 +667,21 @@ class ToolCallRecord(StrictModel):
 class TerminologyEvidenceState(StrictModel):
     case_id: str
     term_candidate: str
+    raw_term_candidate: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    resolved_term_anchor: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    term_anchor_resolution_status: Literal[
+        "EXACT", "RESOLVED", "AMBIGUOUS", "UNRESOLVED"
+    ] | None = Field(default=None, exclude_if=lambda value: value is None)
+    term_anchor_resolution_reason_code: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    term_anchor_policy_version: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     evidence_need: str
     normative_claim: bool = False
     brand_or_domain: str | None = None

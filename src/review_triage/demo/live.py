@@ -28,6 +28,7 @@ from review_triage.schemas import (
     WorkflowState,
 )
 from review_triage.service import ReviewTriageService
+from review_triage.term_anchor import DemoTermAnchorResolverV1
 from review_triage.workflow import ReviewTriageWorkflow
 
 
@@ -71,6 +72,7 @@ def build_demo_v1_workflow(
         evidence_assessor=evidence_assessor,
         evidence_tools=DemoV1EvidenceTools(DemoEvidenceRetrievalV2(pack)),
         normative_admission_policy=DemoNormativeAdmissionV1(pack),
+        term_anchor_resolver=DemoTermAnchorResolverV1.from_pack(pack),
         available_evidence_actions=(EvidenceAction.SEARCH_OFFICIAL_DOCS,),
     )
 

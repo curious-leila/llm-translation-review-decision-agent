@@ -61,6 +61,7 @@ from review_triage.schemas import (
     TerminologyEvidenceState,
     WorkflowState,
 )
+from review_triage.term_anchor import TermAnchorResolver
 
 
 class GraphState(TypedDict, total=False):
@@ -79,6 +80,7 @@ class GraphState(TypedDict, total=False):
 POST_EVAL_TERM_CANDIDATE_NOT_EXACT_SOURCE_SPAN = (
     "POST_EVAL_TERM_CANDIDATE_NOT_EXACT_SOURCE_SPAN"
 )
+TERM_ANCHOR_AMBIGUOUS = "TERM_ANCHOR_AMBIGUOUS"
 
 
 def is_exact_source_span_v1(*, source_text: str, term_candidate: str) -> bool:
@@ -115,6 +117,7 @@ class ReviewTriageWorkflow:
         baseline_id: str = "C_AGENT",
         prompt_loader: EvaluatorPromptLoader | None = None,
         prompt_registry: ReviewPromptRegistry | None = None,
+        term_anchor_resolver: TermAnchorResolver | None = None,
     ) -> None:
         self.repository = repository
         self.llm = llm
@@ -128,6 +131,7 @@ class ReviewTriageWorkflow:
         )
         self.baseline_id = baseline_id
         self.prompt_registry = prompt_registry or ReviewPromptRegistry()
+        self.term_anchor_resolver = term_anchor_resolver
         self.evaluator_prompts = (prompt_loader or EvaluatorPromptLoader()).load_all()
         self.evidence_selector = evidence_selector or LLMEvidenceActionSelector(
             llm, prompt_registry=self.prompt_registry
@@ -356,9 +360,38 @@ class ReviewTriageWorkflow:
             raise PolicyConfigurationError(
                 "NODE-03 requires structured TerminologyDetails"
             )
+        raw_term_candidate = details.term_candidate or ""
+        anchor_resolution = (
+            self.term_anchor_resolver.resolve(
+                source_text=case.source_text,
+                term_candidate=raw_term_candidate,
+            )
+            if self.term_anchor_resolver is not None
+            else None
+        )
+        resolved_term_anchor = (
+            anchor_resolution.resolved_term_anchor
+            if anchor_resolution and anchor_resolution.resolved_term_anchor
+            else raw_term_candidate
+        )
         evidence_state = TerminologyEvidenceState(
             case_id=case.case_id,
-            term_candidate=details.term_candidate or "",
+            term_candidate=resolved_term_anchor,
+            raw_term_candidate=(
+                anchor_resolution.raw_term_candidate if anchor_resolution else None
+            ),
+            resolved_term_anchor=(
+                anchor_resolution.resolved_term_anchor if anchor_resolution else None
+            ),
+            term_anchor_resolution_status=(
+                anchor_resolution.status if anchor_resolution else None
+            ),
+            term_anchor_resolution_reason_code=(
+                anchor_resolution.reason_code if anchor_resolution else None
+            ),
+            term_anchor_policy_version=(
+                anchor_resolution.policy_version if anchor_resolution else None
+            ),
             evidence_need=details.evidence_need or "",
             normative_claim=details.normative_claim,
             brand_or_domain=case.brand_or_domain,
@@ -370,6 +403,10 @@ class ReviewTriageWorkflow:
             available_actions=list(self.available_evidence_actions),
         )
         strict_admission_enabled = self.normative_admission_policy is not None
+        anchor_resolution_valid = (
+            anchor_resolution is None
+            or anchor_resolution.status != "AMBIGUOUS"
+        )
         exact_span_valid = (
             not strict_admission_enabled
             or is_exact_source_span_v1(
@@ -377,7 +414,7 @@ class ReviewTriageWorkflow:
                 term_candidate=evidence_state.term_candidate,
             )
         )
-        if exact_span_valid:
+        if anchor_resolution_valid and exact_span_valid:
             result = TerminologyEvidenceLoop(
                 selector=self.evidence_selector,
                 assessor=self.evidence_assessor,
@@ -390,7 +427,9 @@ class ReviewTriageWorkflow:
                     "evidence_status": EvidenceStatus.INSUFFICIENT,
                     "stop_action": EvidenceAction.ABSTAIN,
                     "stop_reason": (
-                        POST_EVAL_TERM_CANDIDATE_NOT_EXACT_SOURCE_SPAN
+                        TERM_ANCHOR_AMBIGUOUS
+                        if not anchor_resolution_valid
+                        else POST_EVAL_TERM_CANDIDATE_NOT_EXACT_SOURCE_SPAN
                     ),
                 }
             )
@@ -403,9 +442,13 @@ class ReviewTriageWorkflow:
             input_state=evidence_state,
             output_state=result,
             decision_reason=(
-                "Post-Eval term_candidate failed the literal exact-source-span "
-                "contract; evidence acquisition stopped before retrieval, assessment, "
-                "or admission."
+                "The Demo term candidate matched multiple equally specific "
+                "registered literal source-term anchors; evidence acquisition "
+                "stopped before retrieval, assessment, or admission."
+                if not anchor_resolution_valid
+                else "Post-Eval term_candidate failed the literal exact-source-span "
+                "contract; evidence acquisition stopped before retrieval, "
+                "assessment, or admission."
                 if not exact_span_valid
                 else (
                     "Fixed precomputed evidence plan completed under provenance, "

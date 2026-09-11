@@ -127,6 +127,21 @@ class ReviewEvidenceCandidateDTO(StrictModel):
 class ReviewEvidenceDTOGroup(StrictModel):
     status: str | None
     stop_reason: str | None
+    raw_term_candidate: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    resolved_term_anchor: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    term_anchor_resolution_status: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    term_anchor_resolution_reason_code: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    term_anchor_policy_version: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     verified_evidence: list[ReviewEvidenceDTO]
     actions: list[ReviewEvidenceActionDTO]
     tool_calls: list[ReviewToolCallDTO]
@@ -154,6 +169,18 @@ class ReviewTrajectoryToolCallDTO(StrictModel):
 class ReviewTrajectoryEvidenceDTO(StrictModel):
     required: bool
     need_reason: str
+    raw_term_candidate: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    resolved_term_anchor: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    term_anchor_resolution_status: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    term_anchor_policy_version: str | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     status: str
     status_label_zh: str
     tool_calls: list[ReviewTrajectoryToolCallDTO]
@@ -345,6 +372,36 @@ def build_review_agent_trajectory(
                 fact_refs=["post_eval_control.terminology"],
             )
         )
+    if evidence_group and evidence_group.term_anchor_policy_version:
+        resolved_anchor = evidence_group.resolved_term_anchor
+        resolution_status = evidence_group.term_anchor_resolution_status
+        if resolved_anchor:
+            anchor_step_status = "COMPLETE"
+            anchor_summary = (
+                f"模型候选“{evidence_group.raw_term_candidate}” → "
+                f"检索锚点“{resolved_anchor}”。"
+            )
+        elif resolution_status == "AMBIGUOUS":
+            anchor_step_status = "SAFE_ABSTAIN"
+            anchor_summary = "模型候选对应多个同等术语锚点，无法唯一确定，停止检索。"
+        else:
+            anchor_step_status = "UNRESOLVED"
+            anchor_summary = "模型候选未映射到已注册术语，按原候选执行受控检索。"
+        steps.append(
+            ReviewTrajectoryStepDTO(
+                step_id="term-anchor-resolution",
+                kind="TERM_ANCHOR",
+                status=anchor_step_status,
+                title_zh="解析术语锚点",
+                summary_zh=anchor_summary,
+                fact_refs=[
+                    "evidence.raw_term_candidate",
+                    "evidence.resolved_term_anchor",
+                    "evidence.term_anchor_resolution_status",
+                    "evidence.term_anchor_policy_version",
+                ],
+            )
+        )
     for call in trajectory_calls:
         count_copy = (
             f"，返回 {call.candidate_count} 条候选"
@@ -417,6 +474,20 @@ def build_review_agent_trajectory(
         evidence=ReviewTrajectoryEvidenceDTO(
             required=required,
             need_reason=evidence_need_reason,
+            raw_term_candidate=(
+                evidence_group.raw_term_candidate if evidence_group else None
+            ),
+            resolved_term_anchor=(
+                evidence_group.resolved_term_anchor if evidence_group else None
+            ),
+            term_anchor_resolution_status=(
+                evidence_group.term_anchor_resolution_status
+                if evidence_group
+                else None
+            ),
+            term_anchor_policy_version=(
+                evidence_group.term_anchor_policy_version if evidence_group else None
+            ),
             status=evidence_status,
             status_label_zh=status_labels[evidence_status],
             tool_calls=trajectory_calls,
@@ -490,6 +561,11 @@ def to_review_result(state: WorkflowState) -> ReviewResultDTO:
         evidence=(ReviewEvidenceDTOGroup(
             status=evidence_state.evidence_status.value if evidence_state.evidence_status else None,
             stop_reason=evidence_state.stop_reason,
+            raw_term_candidate=evidence_state.raw_term_candidate,
+            resolved_term_anchor=evidence_state.resolved_term_anchor,
+            term_anchor_resolution_status=evidence_state.term_anchor_resolution_status,
+            term_anchor_resolution_reason_code=evidence_state.term_anchor_resolution_reason_code,
+            term_anchor_policy_version=evidence_state.term_anchor_policy_version,
             verified_evidence=[ReviewEvidenceDTO(
                 provenance=item.provenance.value, source_ref=item.source_ref, content=item.content,
                 relevance_reason=item.relevance_reason, context_match=item.context_match,
