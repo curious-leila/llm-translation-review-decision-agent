@@ -9,16 +9,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=live-review-v2">
+  <link rel="stylesheet" href="./styles.css?v=hero-cta-v3">
 </head>
 <body>
   <header class="site-header">
     <div class="site-header-inner shell">
       <a class="wordmark" href="#top" aria-label="返回页面顶部">REVIEW DECISION AGENT</a>
       <nav id="primary-navigation" class="primary-nav" aria-label="主导航">
-        <a class="nav-link is-active" href="#workspace" aria-current="page">产品演示</a>
-        <a class="nav-link" href="#cases">案例回放</a>
-        <button class="nav-review-button" type="button" data-open-live>开始审校</button>
+        <a class="nav-pill nav-pill-pink is-active" href="#workspace" aria-current="page">产品演示</a>
+        <a class="nav-pill nav-pill-blue" href="#cases">案例回放</a>
+        <button class="nav-pill nav-pill-mint" type="button" data-open-live>开始审校</button>
       </nav>
       <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="打开主导航" aria-expanded="false" aria-controls="primary-navigation">
         <span aria-hidden="true"></span>
@@ -32,21 +32,18 @@
     <section class="hero shell" aria-labelledby="page-title">
       <div class="hero-copy">
         <p class="eyebrow hero-eyebrow">面向大模型译文的审校决策Agent</p>
-        <h1 id="page-title">让每条译文，走到合适的审校路径。</h1>
-        <p class="hero-subtitle">不是再做一次翻译，而是判断：自动通过、抽样复核，还是交给人工。</p>
+        <h1 id="page-title"><span class="hero-title-line">让每条译文，</span><span class="hero-title-line">走到合适的审校路径</span></h1>
+        <p class="hero-subtitle">不是再做一次翻译，而是判断：自动通过、抽样复核，还是交给人工</p>
       </div>
-      <div class="hero-actions">
-        <ul class="trust-points" aria-label="产品可信能力">
-          <li><strong>按需取证</strong></li>
-          <li><strong>轨迹可回放</strong></li>
-          <li><strong>安全弃权</strong></li>
-        </ul>
+      <div class="hero-live-cta">
+        <p class="hero-live-label"><span aria-hidden="true"></span>在线 Review Agent</p>
         <button class="live-entry" type="button" data-open-live>
           <span>开始审校</span>
           <svg class="live-entry-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
             <path d="M4 10h11m-4-4 4 4-4 4" />
           </svg>
         </button>
+        <p class="hero-live-note">提交译文，调用真实后端</p>
       </div>
     </section>
 
@@ -221,6 +218,6 @@
   </dialog>
 
   <noscript><p class="noscript">请启用 JavaScript 以切换四个冻结案例或运行在线审校。</p></noscript>
-  <script src="./app.js?v=live-review-v2" defer></script>
+  <script src="./app.js?v=hero-cta-v3" defer></script>
 </body>
 </html>
