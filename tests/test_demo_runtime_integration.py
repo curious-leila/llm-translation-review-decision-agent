@@ -366,7 +366,12 @@ class DemoStaticPresentationTests(unittest.TestCase):
     def test_landing_is_an_hr_first_replay_workbench(self) -> None:
         index = (self.static_root / "index.html").read_text(encoding="utf-8")
         app = (self.static_root / "app.js").read_text(encoding="utf-8")
+        styles = (self.static_root / "styles.css").read_text(encoding="utf-8")
 
+        self.assertIn("<title>面向大模型译文的审校决策Agent</title>", index)
+        self.assertIn("Noto+Serif+SC", index)
+        self.assertIn('--font-serif:"Noto Serif SC"', styles)
+        self.assertNotRegex(styles, r"font-weight:(650|730|750|800|850)")
         self.assertIn("让每条 AI 译文，都有证据地通过。", index)
         self.assertIn("按需取证", index)
         self.assertIn("轨迹可回放", index)
