@@ -129,7 +129,7 @@
     ],
     "post_eval_control": {
       "terminology_requires_external_evidence": true,
-      "terminology_reason": "The Terminology Neutral judgment rests on the factual claim that “天丝” is the official Chinese name for the brand TENCEL™. This is a concrete, decision-material naming fact. The current case provides only the English source text, the Chinese translation, and the domain brooklinen.com; it contains no authoritative brand glossary or official Chinese product naming confirmation. The model-reported source cannot be treated as verified evidence. An official Lenzing brand page, Chinese product site, or trademark authority could resolve the fact, and a different official Chinese designation could change the Terminology judgment.",
+      "terminology_reason": "术语判断（Terminology）认为“天丝”是 TENCEL™ 的官方中文名称。该命名事实会直接影响审校结论，但当前材料没有品牌官方词表或官方中文命名依据，模型提到的来源也尚未核实，因此需要查证 Lenzing 官方页面或商标资料。",
       "unresolved_support": {
         "ACCURACY": true,
         "LOCALE": false,
@@ -277,7 +277,7 @@
       ],
       "evidence": {
         "required": true,
-        "need_reason": "The Terminology Neutral judgment rests on the factual claim that “天丝” is the official Chinese name for the brand TENCEL™. This is a concrete, decision-material naming fact. The current case provides only the English source text, the Chinese translation, and the domain brooklinen.com; it contains no authoritative brand glossary or official Chinese product naming confirmation. The model-reported source cannot be treated as verified evidence. An official Lenzing brand page, Chinese product site, or trademark authority could resolve the fact, and a different official Chinese designation could change the Terminology judgment.",
+        "need_reason": "术语判断（Terminology）认为“天丝”是 TENCEL™ 的官方中文名称。该命名事实会直接影响审校结论，但当前材料没有品牌官方词表或官方中文命名依据，模型提到的来源也尚未核实，因此需要查证 Lenzing 官方页面或商标资料。",
         "status": "INSUFFICIENT",
         "status_label_zh": "证据不足 · 安全弃权",
         "tool_calls": [
@@ -397,7 +397,7 @@
           "kind": "EVIDENCE_GATE",
           "status": "COMPLETE",
           "title_zh": "需要外部证据",
-          "summary_zh": "The Terminology Neutral judgment rests on the factual claim that “天丝” is the official Chinese name for the brand TENCEL™. This is a concrete, decision-material naming fact. The current case provides only the English source text, the Chinese translation, and the domain brooklinen.com; it contains no authoritative brand glossary or official Chinese product naming confirmation. The model-reported source cannot be treated as verified evidence. An official Lenzing brand page, Chinese product site, or trademark authority could resolve the fact, and a different official Chinese designation could change the Terminology judgment.",
+          "summary_zh": "术语判断（Terminology）认为“天丝”是 TENCEL™ 的官方中文名称。该命名事实会直接影响审校结论，但当前材料没有品牌官方词表或官方中文命名依据，模型提到的来源也尚未核实，因此需要查证 Lenzing 官方页面或商标资料。",
           "fact_refs": [
             "post_eval_control.terminology"
           ]

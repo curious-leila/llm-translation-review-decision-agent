@@ -372,7 +372,11 @@ class DemoStaticPresentationTests(unittest.TestCase):
         self.assertIn("Noto+Serif+SC", index)
         self.assertIn('--font-serif:"Noto Serif SC"', styles)
         self.assertNotRegex(styles, r"font-weight:(650|730|750|800|850)")
-        self.assertIn("让每条 AI 译文，都有证据地通过。", index)
+        self.assertIn("让每条译文，走到合适的审校路径。", index)
+        self.assertNotIn("让每条 AI 译文，都有证据地通过。", index)
+        self.assertNotIn("让专业的 AI，做专业的判断。", index)
+        self.assertNotIn("RECORDED RUN · 默认展示冻结案例", index)
+        self.assertIn("真实运行回放 · 后端结果快照", index)
         self.assertIn("按需取证", index)
         self.assertIn("轨迹可回放", index)
         self.assertIn("安全弃权", index)
@@ -475,11 +479,49 @@ class DemoStaticPresentationTests(unittest.TestCase):
                 self.assertTrue(
                     all(step["fact_refs"] for step in trajectory["steps"])
                 )
+                evidence_gate = next(
+                    (step for step in trajectory["steps"] if step["step_id"] == "evidence-gate"),
+                    None,
+                )
+                if trajectory["evidence"]["required"]:
+                    self.assertIsNotNone(evidence_gate)
+                    self.assertRegex(evidence_gate["summary_zh"], r"[\u3400-\u9fff]")
+                    self.assertNotRegex(
+                        evidence_gate["summary_zh"],
+                        r"^The Terminology",
+                    )
                 if evidence_status == "INSUFFICIENT":
                     self.assertIn(
                         "证据不足 · 安全弃权 → 人工复核。",
                         [step["summary_zh"] for step in trajectory["steps"]],
                     )
+
+    def test_trajectory_localizes_an_english_evidence_need_reason(self) -> None:
+        snapshot = json.loads(
+            (self.static_root / "replays" / "mkt-020-evidence-validation.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        raw_result = snapshot["result"]
+        contract_payload = {
+            key: value
+            for key, value in raw_result.items()
+            if key in ReviewResultDTO.model_fields and key != "trajectory"
+        }
+        contract_payload["post_eval_control"]["terminology_reason"] = (
+            "The Terminology judgment depends on an unverified official naming fact."
+        )
+
+        trajectory = build_review_agent_trajectory(
+            ReviewResultDTO.model_validate(contract_payload)
+        )
+        evidence_gate = next(
+            step for step in trajectory.steps if step.step_id == "evidence-gate"
+        )
+
+        self.assertRegex(trajectory.evidence.need_reason, r"[\u3400-\u9fff]")
+        self.assertEqual(evidence_gate.summary_zh, trajectory.evidence.need_reason)
+        self.assertNotIn("The Terminology", evidence_gate.summary_zh)
 
 
 if __name__ == "__main__":

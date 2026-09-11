@@ -127,7 +127,7 @@
     ],
     "post_eval_control": {
       "terminology_requires_external_evidence": true,
-      "terminology_reason": "Terminology judgment 认为 Flodesk Studio 应保留原文，这依赖于产品专有名词不翻译的行业惯例以及该品牌没有官方中文译名的事实；该断言包含规范性含义（应保留原文），且这些外部事实尚未验证。",
+      "terminology_reason": "术语判断（Terminology）认为“Flodesk Studio”应保留英文。这个判断依赖两个尚未核实的依据：该品牌是否存在官方中文名，以及品牌专名在当前场景中是否应沿用英文写法。当前材料没有官方命名依据，因此需要查证 Flodesk 官网或官方中文页面。",
       "unresolved_support": {
         "ACCURACY": false,
         "LOCALE": false,
@@ -275,7 +275,7 @@
       ],
       "evidence": {
         "required": true,
-        "need_reason": "Terminology judgment 认为 Flodesk Studio 应保留原文，这依赖于产品专有名词不翻译的行业惯例以及该品牌没有官方中文译名的事实；该断言包含规范性含义（应保留原文），且这些外部事实尚未验证。",
+        "need_reason": "术语判断（Terminology）认为“Flodesk Studio”应保留英文。这个判断依赖两个尚未核实的依据：该品牌是否存在官方中文名，以及品牌专名在当前场景中是否应沿用英文写法。当前材料没有官方命名依据，因此需要查证 Flodesk 官网或官方中文页面。",
         "status": "INSUFFICIENT",
         "status_label_zh": "证据不足 · 安全弃权",
         "tool_calls": [
@@ -393,7 +393,7 @@
           "kind": "EVIDENCE_GATE",
           "status": "COMPLETE",
           "title_zh": "需要外部证据",
-          "summary_zh": "Terminology judgment 认为 Flodesk Studio 应保留原文，这依赖于产品专有名词不翻译的行业惯例以及该品牌没有官方中文译名的事实；该断言包含规范性含义（应保留原文），且这些外部事实尚未验证。",
+          "summary_zh": "术语判断（Terminology）认为“Flodesk Studio”应保留英文。这个判断依赖两个尚未核实的依据：该品牌是否存在官方中文名，以及品牌专名在当前场景中是否应沿用英文写法。当前材料没有官方命名依据，因此需要查证 Flodesk 官网或官方中文页面。",
           "fact_refs": [
             "post_eval_control.terminology"
           ]

@@ -263,6 +263,17 @@ def _route_summary(route: ReviewRouteDTO) -> str:
     return f"后端既定路由规则将本案例送入{label}。"
 
 
+def _evidence_need_reason_zh(reason: str) -> str:
+    """Keep the zh display contract readable without translating in the browser."""
+
+    if re.search(r"[\u3400-\u9fff]", reason):
+        return reason
+    return (
+        "术语判断（Terminology）依赖尚未核实的外部命名或规范性事实；"
+        "当前材料没有可验证该断言的权威依据，因此需要外部证据。"
+    )
+
+
 def build_review_agent_trajectory(
     result: ReviewResultDTO,
 ) -> ReviewAgentTrajectoryDTO:
@@ -275,6 +286,9 @@ def build_review_agent_trajectory(
         evidence_group.status
         if evidence_group and evidence_group.status
         else "NOT_REQUIRED" if control and not required else "UNAVAILABLE"
+    )
+    evidence_need_reason = (
+        _evidence_need_reason_zh(control.terminology_reason) if control else ""
     )
     status_labels = {
         "SUFFICIENT": "证据充分",
@@ -324,7 +338,7 @@ def build_review_agent_trajectory(
                 status="COMPLETE" if required else "SKIPPED",
                 title_zh="需要外部证据" if required else "无需外部查证",
                 summary_zh=(
-                    control.terminology_reason
+                    evidence_need_reason
                     if required
                     else "当前术语判断不依赖未解决的外部事实，跳过证据检索。"
                 ),
@@ -402,7 +416,7 @@ def build_review_agent_trajectory(
         dimensions=result.dimensions,
         evidence=ReviewTrajectoryEvidenceDTO(
             required=required,
-            need_reason=control.terminology_reason if control else "",
+            need_reason=evidence_need_reason,
             status=evidence_status,
             status_label_zh=status_labels[evidence_status],
             tool_calls=trajectory_calls,

@@ -125,7 +125,7 @@
     ],
     "post_eval_control": {
       "terminology_requires_external_evidence": true,
-      "terminology_reason": "Terminology 判断明确使用了'标准惯用译法''行业惯例译法'的规范性译法断言，并据此认定无术语问题；该判断成立依赖尚未验证的行业标准/惯例，故需要外部证据。",
+      "terminology_reason": "术语判断（Terminology）使用了“标准惯用译法”“行业惯例译法”等规范性依据，并据此认定不存在术语问题。由于这些说法依赖尚未核实的行业标准或惯例，因此需要外部证据。",
       "unresolved_support": {
         "ACCURACY": false,
         "LOCALE": false,
@@ -238,7 +238,7 @@
       ],
       "evidence": {
         "required": true,
-        "need_reason": "Terminology 判断明确使用了'标准惯用译法''行业惯例译法'的规范性译法断言，并据此认定无术语问题；该判断成立依赖尚未验证的行业标准/惯例，故需要外部证据。",
+        "need_reason": "术语判断（Terminology）使用了“标准惯用译法”“行业惯例译法”等规范性依据，并据此认定不存在术语问题。由于这些说法依赖尚未核实的行业标准或惯例，因此需要外部证据。",
         "status": "SUFFICIENT",
         "status_label_zh": "证据充分",
         "tool_calls": [
@@ -327,7 +327,7 @@
           "kind": "EVIDENCE_GATE",
           "status": "COMPLETE",
           "title_zh": "需要外部证据",
-          "summary_zh": "Terminology 判断明确使用了'标准惯用译法''行业惯例译法'的规范性译法断言，并据此认定无术语问题；该判断成立依赖尚未验证的行业标准/惯例，故需要外部证据。",
+          "summary_zh": "术语判断（Terminology）使用了“标准惯用译法”“行业惯例译法”等规范性依据，并据此认定不存在术语问题。由于这些说法依赖尚未核实的行业标准或惯例，因此需要外部证据。",
           "fact_refs": [
             "post_eval_control.terminology"
           ]
