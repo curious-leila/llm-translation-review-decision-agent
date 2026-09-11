@@ -27,17 +27,22 @@
   <main id="top">
     <section class="hero shell" aria-labelledby="page-title">
       <div class="hero-copy">
-        <p class="eyebrow">TRANSLATION REVIEW DECISION AGENT</p>
+        <p class="eyebrow hero-eyebrow">面向大模型译文的审校决策Agent</p>
         <h1 id="page-title">让每条 AI 译文，都有证据地通过。</h1>
         <p class="hero-subtitle">不是再做一次翻译，而是判断：自动通过、抽样复核，还是交给人工。</p>
       </div>
       <div class="hero-actions">
         <ul class="trust-points" aria-label="产品可信能力">
-          <li><strong>按需取证</strong><span>只在判断依赖外部事实时查证</span></li>
-          <li><strong>轨迹可回放</strong><span>输入、行动、证据与路由同源</span></li>
-          <li><strong>安全弃权</strong><span>证据不足时停止自主判断</span></li>
+          <li><strong>按需取证</strong></li>
+          <li><strong>轨迹可回放</strong></li>
+          <li><strong>安全弃权</strong></li>
         </ul>
-        <button class="live-entry" type="button" data-open-live>粘贴自己的译文</button>
+        <button class="live-entry" type="button" data-open-live>
+          <span>粘贴自己的译文</span>
+          <svg class="live-entry-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M4 10h11m-4-4 4 4-4 4" />
+          </svg>
+        </button>
       </div>
     </section>
 
@@ -51,17 +56,17 @@
       </div>
 
       <div id="cases" class="case-switcher" role="tablist" aria-label="切换四个真实案例">
-        <button id="case-tab-direct" class="case-tab" type="button" role="tab" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/refund-no-evidence.json?v=trajectory-v1" data-display-case-id="CS-020">
-          <span>无需查证</span><small>进入抽样复核</small>
+        <button id="case-tab-direct" class="case-tab" type="button" role="tab" aria-label="无需查证，进入抽样复核" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/refund-no-evidence.json?v=trajectory-v1" data-display-case-id="CS-020">
+          <span>无需查证</span>
         </button>
-        <button id="case-tab-validation" class="case-tab" type="button" role="tab" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/mkt-020-evidence-validation.json?v=trajectory-v1" data-display-case-id="MKT-020">
-          <span>证据验证</span><small>命中不等于接纳</small>
+        <button id="case-tab-validation" class="case-tab" type="button" role="tab" aria-label="证据验证，命中不等于接纳" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/mkt-020-evidence-validation.json?v=trajectory-v1" data-display-case-id="MKT-020">
+          <span>证据验证</span>
         </button>
-        <button id="case-tab-abstain" class="case-tab" type="button" role="tab" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/mkt-005-safe-failure.json?v=trajectory-v1" data-display-case-id="MKT-005">
-          <span>证据不足 · 安全弃权</span><small>转人工复核</small>
+        <button id="case-tab-abstain" class="case-tab" type="button" role="tab" aria-label="证据不足，安全弃权后转人工复核" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/mkt-005-safe-failure.json?v=trajectory-v1" data-display-case-id="MKT-005">
+          <span>证据不足</span>
         </button>
-        <button id="case-tab-success" class="case-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="review-workspace" tabindex="0" data-default-replay data-replay-url="./replays/ui-003-agent-success.json?v=trajectory-v1" data-display-case-id="UI-003">
-          <span>证据充分 · 自动通过</span><small>默认案例</small>
+        <button id="case-tab-success" class="case-tab is-active" type="button" role="tab" aria-label="自动通过，证据充分的默认案例" aria-selected="true" aria-controls="review-workspace" tabindex="0" data-default-replay data-replay-url="./replays/ui-003-agent-success.json?v=trajectory-v1" data-display-case-id="UI-003">
+          <span>自动通过</span>
         </button>
       </div>
 
