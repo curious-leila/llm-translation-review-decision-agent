@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=case-workbench-v4">
+  <link rel="stylesheet" href="./styles.css?v=mobile-case-picker-v5">
 </head>
 <body>
   <header class="site-header">
@@ -56,6 +56,13 @@
       </div>
 
       <div class="case-workspace-card">
+        <button id="mobile-case-picker" class="mobile-case-picker" type="button" aria-expanded="false" aria-controls="cases" data-active-case="4">
+          <span class="mobile-case-current">
+            <small>当前案例</small>
+            <strong id="mobile-case-label">自动通过</strong>
+          </span>
+          <span class="mobile-case-action">切换案例 <span class="mobile-case-chevron" aria-hidden="true"></span></span>
+        </button>
         <div id="cases" class="case-switcher" role="tablist" aria-label="切换四个真实案例">
           <button id="case-tab-direct" class="case-tab" type="button" role="tab" aria-label="无需查证，进入抽样复核" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/refund-no-evidence.json?v=trajectory-v1" data-display-case-id="CS-020">
             <span>无需查证</span>
@@ -220,6 +227,6 @@
   </dialog>
 
   <noscript><p class="noscript">请启用 JavaScript 以切换四个冻结案例或运行在线审校。</p></noscript>
-  <script src="./app.js?v=case-workbench-v4" defer></script>
+  <script src="./app.js?v=mobile-case-picker-v5" defer></script>
 </body>
 </html>

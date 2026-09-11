@@ -40,6 +40,10 @@ const stepStatusLabels = {
 const workspace = document.querySelector("#review-workspace");
 const replayStatus = document.querySelector("#replay-status");
 const replayTabs = [...document.querySelectorAll(".case-tab")];
+const caseSwitcher = document.querySelector("#cases");
+const caseWorkspaceCard = document.querySelector(".case-workspace-card");
+const mobileCasePicker = document.querySelector("#mobile-case-picker");
+const mobileCaseLabel = document.querySelector("#mobile-case-label");
 const trajectoryList = document.querySelector("#trajectory-list");
 const evidenceList = document.querySelector("#evidence-list");
 const reliabilityList = document.querySelector("#reliability-list");
@@ -55,6 +59,20 @@ const primaryNavigation = document.querySelector("#primary-navigation");
 const mobileMenuToggle = document.querySelector("#mobile-menu-toggle");
 let replayRequestSequence = 0;
 let currentTrajectory = null;
+
+const mobileCaseLayout = window.matchMedia("(max-width: 760px), (max-width: 900px) and (max-height: 500px)");
+
+function setMobileCasePicker(open, { restoreFocus = false } = {}) {
+  caseSwitcher.classList.toggle("is-mobile-open", open);
+  mobileCasePicker.setAttribute("aria-expanded", String(open));
+  if (!open && restoreFocus) mobileCasePicker.focus();
+}
+
+mobileCasePicker.addEventListener("click", () => {
+  setMobileCasePicker(mobileCasePicker.getAttribute("aria-expanded") !== "true");
+});
+
+mobileCaseLayout.addEventListener("change", () => setMobileCasePicker(false));
 
 function setMobileMenu(open, { restoreFocus = false } = {}) {
   siteHeader.classList.toggle("is-menu-open", open);
@@ -75,11 +93,17 @@ document.addEventListener("click", (event) => {
   if (siteHeader.classList.contains("is-menu-open") && !siteHeader.contains(event.target)) {
     setMobileMenu(false);
   }
+  if (mobileCasePicker.getAttribute("aria-expanded") === "true" && !caseWorkspaceCard.contains(event.target)) {
+    setMobileCasePicker(false);
+  }
 });
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && siteHeader.classList.contains("is-menu-open")) {
     setMobileMenu(false, { restoreFocus: true });
+  }
+  if (event.key === "Escape" && mobileCasePicker.getAttribute("aria-expanded") === "true") {
+    setMobileCasePicker(false, { restoreFocus: true });
   }
 });
 
@@ -233,6 +257,8 @@ function setActiveTab(activeTab) {
     tab.tabIndex = active ? 0 : -1;
   });
   if (activeTab) {
+    mobileCaseLabel.textContent = activeTab.querySelector("span")?.textContent || "当前案例";
+    mobileCasePicker.dataset.activeCase = String(replayTabs.indexOf(activeTab) + 1);
     workspace.setAttribute("aria-labelledby", activeTab.id);
     workspace.removeAttribute("aria-label");
   } else {
@@ -244,6 +270,7 @@ function setActiveTab(activeTab) {
 function setReplayLoading(active) {
   workspace.setAttribute("aria-busy", String(active));
   replayTabs.forEach((tab) => { tab.disabled = active; });
+  mobileCasePicker.disabled = active;
 }
 
 async function loadReplay(tab, options = {}) {
@@ -269,13 +296,18 @@ async function loadReplay(tab, options = {}) {
   } finally {
     if (requestSequence === replayRequestSequence) {
       setReplayLoading(false);
-      if (options.focus) tab.focus();
+      if (options.focusPicker) mobileCasePicker.focus();
+      else if (options.focus) tab.focus();
     }
   }
 }
 
 replayTabs.forEach((tab) => {
-  tab.addEventListener("click", () => loadReplay(tab));
+  tab.addEventListener("click", () => {
+    const focusPicker = mobileCaseLayout.matches;
+    if (focusPicker) setMobileCasePicker(false);
+    loadReplay(tab, { focusPicker });
+  });
   tab.addEventListener("keydown", (event) => {
     const currentIndex = replayTabs.indexOf(tab);
     let nextIndex = null;
