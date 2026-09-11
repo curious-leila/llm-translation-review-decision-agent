@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=mobile-navigation-v1">
+  <link rel="stylesheet" href="./styles.css?v=live-review-v2">
 </head>
 <body>
   <header class="site-header">
@@ -18,7 +18,7 @@
       <nav id="primary-navigation" class="primary-nav" aria-label="主导航">
         <a class="nav-link is-active" href="#workspace" aria-current="page">产品演示</a>
         <a class="nav-link" href="#cases">案例回放</a>
-        <a class="nav-link" href="./architecture/review-decision-agent.architecture.html" target="_blank" rel="noopener">方法与架构</a>
+        <button class="nav-review-button" type="button" data-open-live>开始审校</button>
       </nav>
       <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="打开主导航" aria-expanded="false" aria-controls="primary-navigation">
         <span aria-hidden="true"></span>
@@ -42,7 +42,7 @@
           <li><strong>安全弃权</strong></li>
         </ul>
         <button class="live-entry" type="button" data-open-live>
-          <span>粘贴自己的译文</span>
+          <span>开始审校</span>
           <svg class="live-entry-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
             <path d="M4 10h11m-4-4 4 4-4 4" />
           </svg>
@@ -99,7 +99,7 @@
             </div>
           </div>
           <footer class="panel-footer">
-            <button class="secondary-button" type="button" data-open-live>粘贴自己的译文</button>
+            <span>冻结案例回放</span>
             <span>Recorded Run</span>
           </footer>
         </article>
@@ -178,11 +178,19 @@
   <dialog id="live-review-dialog" aria-labelledby="live-review-heading">
     <div class="dialog-shell">
       <header class="dialog-header">
-        <div><p class="eyebrow">OPTIONAL LIVE REVIEW</p><h2 id="live-review-heading">粘贴自己的译文</h2></div>
+        <div><p class="eyebrow">LIVE REVIEW</p><h2 id="live-review-heading">提交自己的译文</h2></div>
         <button class="dialog-close" type="button" data-close-live aria-label="关闭 Live Review">关闭</button>
       </header>
-      <p class="dialog-intro">Live API 是可选增强。提交成功后，结果会在当前三栏工作台中展示；连接失败不会伪造结论。</p>
+      <p class="dialog-intro">提交后将调用在线 Review Agent 运行新审校，结果会在当前三栏工作台中展示；若连接失败，流程将安全停止，不生成伪结论。</p>
       <form id="review-form" novalidate>
+        <section id="review-progress" class="review-progress" role="status" aria-live="polite" aria-atomic="true" hidden>
+          <span class="review-progress-spinner" aria-hidden="true"></span>
+          <div>
+            <p id="review-progress-kicker" class="review-progress-kicker">LIVE REVIEW · RUNNING</p>
+            <h3 id="review-progress-title">提交成功，Review Agent 正在分析</h3>
+            <p id="review-progress-message">正在进行风险扫描、证据检索与可靠性判定，请稍候…</p>
+          </div>
+        </section>
         <label class="field field-wide">英文原文
           <textarea name="source_text" required maxlength="2000" placeholder="粘贴需要审校的英文原文"></textarea>
         </label>
@@ -205,14 +213,14 @@
           </div>
         </details>
         <div class="submit-row">
-          <p id="form-status" class="form-status" role="status" aria-live="polite" aria-atomic="true"></p>
-          <button id="submit-button" class="primary-button" type="submit">运行 Live Review</button>
+          <p class="submit-note">结果将直接载入当前三栏工作台</p>
+          <button id="submit-button" class="primary-button" type="submit">开始审校</button>
         </div>
       </form>
     </div>
   </dialog>
 
-  <noscript><p class="noscript">请启用 JavaScript 以切换四个冻结案例；Live Review 仍为可选能力。</p></noscript>
-  <script src="./app.js?v=mobile-navigation-v1" defer></script>
+  <noscript><p class="noscript">请启用 JavaScript 以切换四个冻结案例或运行在线审校。</p></noscript>
+  <script src="./app.js?v=live-review-v2" defer></script>
 </body>
 </html>

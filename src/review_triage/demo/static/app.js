@@ -1,6 +1,6 @@
 const API_BASE_URL = "https://llm-translation-review-decision-agent.onrender.com";
 const TRAJECTORY_SCHEMA_VERSION = "review-agent-trajectory/v1";
-const LIVE_BACKEND_UNAVAILABLE_MESSAGE = "暂时无法连接 Live Agent。Render 后端可能仍在唤醒，请稍后重试；当前冻结案例保持不变。";
+const LIVE_BACKEND_UNAVAILABLE_MESSAGE = "本次审校已安全停止，未生成任何结论。请稍后重新提交。";
 
 const contentTypeLabels = {
   MARKETING: "营销文案",
@@ -45,7 +45,10 @@ const evidenceList = document.querySelector("#evidence-list");
 const reliabilityList = document.querySelector("#reliability-list");
 const dialog = document.querySelector("#live-review-dialog");
 const form = document.querySelector("#review-form");
-const formStatus = document.querySelector("#form-status");
+const reviewProgress = document.querySelector("#review-progress");
+const reviewProgressKicker = document.querySelector("#review-progress-kicker");
+const reviewProgressTitle = document.querySelector("#review-progress-title");
+const reviewProgressMessage = document.querySelector("#review-progress-message");
 const submitButton = document.querySelector("#submit-button");
 const siteHeader = document.querySelector(".site-header");
 const primaryNavigation = document.querySelector("#primary-navigation");
@@ -64,7 +67,7 @@ mobileMenuToggle.addEventListener("click", () => {
   setMobileMenu(mobileMenuToggle.getAttribute("aria-expanded") !== "true");
 });
 
-primaryNavigation.querySelectorAll("a").forEach((link) => {
+primaryNavigation.querySelectorAll("a, button").forEach((link) => {
   link.addEventListener("click", () => setMobileMenu(false));
 });
 
@@ -291,6 +294,34 @@ function openLiveDialog() {
   window.requestAnimationFrame(() => form.elements.source_text.focus());
 }
 
+function setReviewSubmissionState(state, message = "") {
+  const submitting = state === "loading";
+  form.setAttribute("aria-busy", String(submitting));
+  [...form.elements].forEach((control) => { control.disabled = submitting; });
+  submitButton.disabled = submitting;
+
+  if (state === "idle") {
+    reviewProgress.hidden = true;
+    reviewProgress.classList.remove("is-error");
+    submitButton.textContent = "开始审校";
+    return;
+  }
+
+  reviewProgress.hidden = false;
+  reviewProgress.classList.toggle("is-error", state === "error");
+  if (state === "loading") {
+    reviewProgressKicker.textContent = "LIVE REVIEW · RUNNING";
+    reviewProgressTitle.textContent = "提交成功，Review Agent 正在分析";
+    reviewProgressMessage.textContent = "正在进行风险扫描、证据检索与可靠性判定，请稍候…";
+    submitButton.textContent = "正在审校…";
+  } else {
+    reviewProgressKicker.textContent = "LIVE REVIEW · SAFE STOP";
+    reviewProgressTitle.textContent = "无法连接 Review Agent";
+    reviewProgressMessage.textContent = message || LIVE_BACKEND_UNAVAILABLE_MESSAGE;
+    submitButton.textContent = "重新提交";
+  }
+}
+
 document.querySelectorAll("[data-open-live]").forEach((button) => {
   button.addEventListener("click", openLiveDialog);
 });
@@ -302,12 +333,10 @@ dialog.addEventListener("click", (event) => {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!form.reportValidity()) return;
-  submitButton.disabled = true;
-  formStatus.classList.remove("is-error");
-  formStatus.textContent = "正在连接 Live Agent，后端可能需要短暂唤醒。";
+  const values = Object.fromEntries(new FormData(form).entries());
+  for (const key of ["brand_or_domain", "context_notes"]) values[key] = values[key]?.trim() || null;
+  setReviewSubmissionState("loading");
   try {
-    const values = Object.fromEntries(new FormData(form).entries());
-    for (const key of ["brand_or_domain", "context_notes"]) values[key] = values[key]?.trim() || null;
     const response = await fetch(`${API_BASE_URL}/api/review`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -319,16 +348,16 @@ form.addEventListener("submit", async (event) => {
     renderWorkspace(trajectory, { displayCaseId: data.case_id ? `LIVE · ${String(data.case_id).slice(0, 8)}` : "LIVE" });
     setActiveTab(null);
     replayStatus.textContent = "Live Review 已完成，并在当前工作台中展示。";
-    formStatus.textContent = "";
+    setReviewSubmissionState("idle");
     dialog.close();
     workspace.tabIndex = -1;
     workspace.focus({ preventScroll: true });
     workspace.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   } catch (error) {
-    formStatus.classList.add("is-error");
-    formStatus.textContent = error instanceof TypeError ? LIVE_BACKEND_UNAVAILABLE_MESSAGE : `${error.message}；当前冻结案例保持不变。`;
-  } finally {
-    submitButton.disabled = false;
+    const message = error instanceof TypeError
+      ? LIVE_BACKEND_UNAVAILABLE_MESSAGE
+      : `${error.message}；本次审校已安全停止，未生成任何替代结论。`;
+    setReviewSubmissionState("error", message);
   }
 });
 
