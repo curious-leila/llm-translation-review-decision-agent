@@ -57,15 +57,15 @@
       </div>
 
       <div class="case-workspace-card">
-        <button id="mobile-case-picker" class="mobile-case-picker" type="button" aria-expanded="false" aria-controls="cases" data-active-case="4">
+        <button id="mobile-case-picker" class="mobile-case-picker" type="button" aria-expanded="false" aria-controls="cases" data-active-case="1">
           <span class="mobile-case-current">
             <small>当前案例</small>
-            <strong id="mobile-case-label">自动通过</strong>
+            <strong id="mobile-case-label">无需查证</strong>
           </span>
           <span class="mobile-case-action">切换案例 <span class="mobile-case-chevron" aria-hidden="true"></span></span>
         </button>
         <div id="cases" class="case-switcher" role="tablist" aria-label="切换四个真实案例">
-          <button id="case-tab-direct" class="case-tab" type="button" role="tab" aria-label="无需查证，进入抽样复核" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/refund-no-evidence.json?v=trajectory-v1" data-display-case-id="CS-020">
+          <button id="case-tab-direct" class="case-tab is-active" type="button" role="tab" aria-label="无需查证，进入抽样复核的默认案例" aria-selected="true" aria-controls="review-workspace" tabindex="0" data-default-replay data-replay-url="./replays/refund-no-evidence.json?v=trajectory-v1" data-display-case-id="CS-020">
             <span>无需查证</span>
           </button>
           <button id="case-tab-validation" class="case-tab" type="button" role="tab" aria-label="证据验证，命中不等于接纳" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/mkt-020-evidence-validation.json?v=trajectory-v1" data-display-case-id="MKT-020">
@@ -74,14 +74,14 @@
           <button id="case-tab-abstain" class="case-tab" type="button" role="tab" aria-label="证据不足，安全弃权后转人工复核" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/mkt-005-safe-failure.json?v=trajectory-v1" data-display-case-id="MKT-005">
             <span>证据不足</span>
           </button>
-          <button id="case-tab-success" class="case-tab is-active" type="button" role="tab" aria-label="自动通过，证据充分的默认案例" aria-selected="true" aria-controls="review-workspace" tabindex="0" data-default-replay data-replay-url="./replays/ui-003-agent-success.json?v=trajectory-v1" data-display-case-id="UI-003">
+          <button id="case-tab-success" class="case-tab" type="button" role="tab" aria-label="自动通过，证据充分案例" aria-selected="false" aria-controls="review-workspace" tabindex="-1" data-replay-url="./replays/ui-003-agent-success.json?v=trajectory-v1" data-display-case-id="UI-003">
             <span>自动通过</span>
           </button>
         </div>
 
         <p id="replay-status" class="sr-status" role="status" aria-live="polite" aria-atomic="true"></p>
 
-        <div id="review-workspace" class="workspace-grid" role="tabpanel" aria-labelledby="case-tab-success" aria-busy="true">
+        <div id="review-workspace" class="workspace-grid" role="tabpanel" aria-labelledby="case-tab-direct" aria-busy="true">
         <article class="workspace-panel input-panel" aria-labelledby="input-panel-title">
           <header class="panel-header">
             <div><span class="panel-number">01</span><h3 id="input-panel-title">待审译文</h3></div>
@@ -207,9 +207,9 @@
         <fieldset class="content-type-field">
           <legend>内容类型</legend>
           <div class="segmented" role="radiogroup" aria-label="内容类型">
-            <label><input type="radio" name="content_type" value="MARKETING" required><span>营销文案</span></label>
+            <label><input type="radio" name="content_type" value="MARKETING" required checked><span>营销文案</span></label>
             <label><input type="radio" name="content_type" value="CUSTOMER_SUPPORT"><span>客服话术</span></label>
-            <label><input type="radio" name="content_type" value="UI" checked><span>界面文案</span></label>
+            <label><input type="radio" name="content_type" value="UI"><span>界面文案</span></label>
           </div>
         </fieldset>
         <details class="optional-context">
